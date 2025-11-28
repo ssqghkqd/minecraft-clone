@@ -5,7 +5,7 @@ module;
 #include <filesystem>
 export module utils.FileManager;
 
-export namespace th::FileManager
+export namespace mc::FileManager
 {
 std::string readFile(const std::filesystem::path& path);
 bool fileExists(const std::filesystem::path& path);

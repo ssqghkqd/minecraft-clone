@@ -9,7 +9,7 @@ import utils.FileManager;
 
 namespace fs = std::filesystem;
 
-namespace th
+namespace mc
 {
 bool AudioManager::init()
 {

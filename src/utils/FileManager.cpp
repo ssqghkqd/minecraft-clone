@@ -9,7 +9,7 @@ import spdlog;
 
 namespace fs = std::filesystem;
 
-namespace th::FileManager
+namespace mc::FileManager
 {
     // 读取文件内容为字符串
     std::string readFile(const fs::path &path)
@@ -47,7 +47,7 @@ namespace th::FileManager
         static fs::path basePath;
         if (isAssets)
         {
-            basePath = "../../Touhou1-assets/assets";
+            basePath = "../../minecraft-assets/assets";
             return basePath / relativePath;
         }
         // 获取可执行文件路径

@@ -6,7 +6,7 @@ module;
 #include <entt/entt.hpp>
 export module core.Init;
 
-export namespace th::Init
+export namespace mc::Init
 {
 void init(entt::registry& reg);
 

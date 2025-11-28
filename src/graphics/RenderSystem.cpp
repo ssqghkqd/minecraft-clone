@@ -1,23 +1,22 @@
 module;
 #include <entt/entt.hpp>
 #include <glm/ext.hpp>
+
+#include "glad.h"
 module graphics.RenderSystem;
 import Config;
 import spdlog;
 import opengl;
-import game.system.PlayerSys;
 import game.comp;
 import graphics.ShaderManager;
 import graphics.TextureManager;
 
-namespace th
+namespace mc
 {
-
 RenderSystem::RenderSystem(entt::registry& registry)
 {
     init(registry, window_width, window_height);
 }
-
 
 void RenderSystem::init(entt::registry& registry, const int screenWidth, const int screenHeight)
 {
@@ -31,12 +30,13 @@ void RenderSystem::init(entt::registry& registry, const int screenWidth, const i
     m_shader = &shaderManager.getShader("default");
 
     auto& meshManager = registry.ctx().get<MeshManager>();
-    m_quadMesh = &meshManager.GetQuadMesh();
+    m_cubeMesh = &meshManager.getCubeMesh();
 
     // 设置OpenGL状态
     gl::enable(gl::blend);
     gl::blendFunc(gl::src_alpha, gl::one_minus_src_alpha);
-    gl::disable(gl::depth_test); // 2D不需要深度测试
+    glEnable(GL_CULL_FACE);  // 开启面剔除
+    glCullFace(GL_BACK);
     spdlog::debug("OPENGL 状态设置完成");
 
     setProjection(screenWidth, screenHeight);
@@ -48,8 +48,13 @@ void RenderSystem::init(entt::registry& registry, const int screenWidth, const i
 
 void RenderSystem::setProjection(int width, int height)
 {
-    // 正交投影矩阵 (Y轴向下，适合2D)
-    m_projection = glm::ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f, -1.0f, 1.0f);
+    const float aspectRatio = static_cast<float>(width) / static_cast<float>(height);
+    m_projection = glm::perspective(
+        glm::radians(45.0f), // 视野角度 45度
+        aspectRatio,         // 宽高比
+        0.1f,                // 近平面
+        100.0f               // 远平面
+    );
 
     // 更新着色器
     m_shader->use();
@@ -60,24 +65,21 @@ void RenderSystem::renderEntity(entt::registry& registry, TransformComp& tf, Ren
 {
     if (!rc.isVisible)
         return;
+    //spdlog::info("渲染实体 - 位置: ({}, {}, {})", tf.position.x, tf.position.y, tf.position.z);
     auto model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(tf.position, 0.0f));
-    model = glm::rotate(model, tf.rotation, glm::vec3(0, 0, 1));
-    model = glm::scale(model, glm::vec3(rc.size * tf.scale, 1.0f));
+    model = glm::translate(model, tf.position);
 
     m_shader->use();
     m_shader->set("model", model);
-    m_shader->set("entityColor", rc.color);
+    m_shader->set("view", m_view);
+    m_shader->set("projection", m_projection);
 
-    const MeshManager::Mesh* mesh = m_quadMesh;
+    const MeshManager::Mesh* mesh = m_cubeMesh;
 
     // TODO 优化批处理
-    /*
-     * 这里目前暂时无需优化 但是一个性能热点 目前帧率2000的情况下不管
-     */
     if (!rc.textureName.empty())
     {
-        m_shader->set("thTexture", 0);
+        m_shader->set("Texture", 0);
         gl::activeTexture(gl::texture0);
         registry.ctx().get<TextureManager>().bind(rc.textureName);
     }
@@ -87,61 +89,14 @@ void RenderSystem::renderEntity(entt::registry& registry, TransformComp& tf, Ren
     gf::drawElements(gl::triangles, mesh->indexCount, gl::unsigned_int, nullptr);
 }
 
-void RenderSystem::renderHitbox(entt::registry& registry, const TransformComp& playerTF, bool isSlowMode, const PlayerComp& pc) const
-{
-    if (!isSlowMode)
-        return; // 只在低速模式显示
-    // 计算判定点位置
-    const glm::vec2 hitboxPos = playerTF.position + pc.hitboxOffset;
-
-    // 创建临时渲染组件
-    RenderComp rc;
-    rc.textureName = "hitbox";
-    rc.size = pc.hitboxSize;
-
-    // 创建临时变换组件
-    TransformComp tf;
-    tf.position = hitboxPos;
-
-    //  使用通用渲染函数
-    renderEntity(registry, tf, rc);
-}
-
-void RenderSystem::renderBackground(entt::registry& registry) const
-{
-    // 创建背景实体（不注册到ECS）
-    static TransformComp bgtf;
-    static RenderComp bgRender;
-
-    bgtf.position = glm::vec2(window_width / 2, window_height / 2);
-    bgRender.textureName = "bg1";
-    bgRender.size = glm::vec2(window_width, window_height);
-
-    renderEntity(registry, bgtf, bgRender);
-}
 void RenderSystem::update(entt::registry& registry) const
 {
-    // 清除屏幕
     gl::clear(gl::color_buffer_bit);
-    // thLogger::debug("rendersystem: 清屏");
 
-    // 注意先渲染背景
-
-    renderBackground(registry);
-
-    // 2. 弹幕 敌人（应该在玩家前面）
     auto view = registry.view<TransformComp, RenderComp>();
     view.each([&registry, this](auto& tf, auto& rc)
-                    {
-                        renderEntity(registry, tf, rc);
-                    });
-
-    // 3. 玩家
-    static auto& m_player = PlayerSys::getPlayer();
-    auto& tf = registry.get<TransformComp>(m_player);
-    auto& rc = registry.get<RenderComp>(m_player);
-    const auto& pc = registry.get<PlayerComp>(m_player);
-    renderEntity(registry, tf, rc);
-    renderHitbox(registry, tf, pc.isSlow, pc);
+              {
+                  renderEntity(registry, tf, rc);
+              });
 }
-} // namespace th
+} // namespace mc

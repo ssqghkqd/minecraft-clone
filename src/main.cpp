@@ -2,7 +2,7 @@ import core.App;
 
 int main()
 {
-    th::App app;
+    mc::App app;
     app.run();
     return 0;
 }

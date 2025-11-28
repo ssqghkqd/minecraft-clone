@@ -11,7 +11,7 @@ import nlohmann_json;
 namespace fs = std::filesystem;
 using json = nlohmann::json;
 
-export namespace th::JsonManager
+export namespace mc::JsonManager
 {
 // json文件的名字与数据的哈希表
 inline std::unordered_map<std::string, json> files;

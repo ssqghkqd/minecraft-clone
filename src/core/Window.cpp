@@ -5,7 +5,7 @@ import Config;
 import opengl;
 import utils.Time;
 
-namespace th
+namespace mc
 {
 
 Window::Window()

@@ -8,7 +8,7 @@ module;
 export module graphics.ShaderManager;
 import graphics.Shader;
 
-export namespace th
+export namespace mc
 {
 class ShaderManager
 {

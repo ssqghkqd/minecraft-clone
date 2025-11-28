@@ -4,7 +4,7 @@
 
 export module utils.Time;
 
-export namespace th::Time
+export namespace mc::Time
 {
 double getDeltaTime();
 double getTime();

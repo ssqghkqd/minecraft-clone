@@ -7,7 +7,7 @@ import spdlog;
 
 namespace fs = std::filesystem;
 
-namespace th
+namespace mc
 {
 
 void Shader::use() const

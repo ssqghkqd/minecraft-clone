@@ -5,7 +5,7 @@
 export module core.Window;
 import glfw;
 
-export namespace th
+export namespace mc
 {
 
 class Window

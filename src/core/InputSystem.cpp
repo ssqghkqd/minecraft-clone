@@ -4,17 +4,14 @@ module;
 module core.InputSystem;
 import core.Window;
 import glfw;
-import game.system.PlayerSys;
 
-namespace th
+namespace mc
 {
 
 void InputSystem::processInput(entt::registry& registry)
 {
     // 检查是否退出
     checkExit(registry);
-    PlayerSys::updatePlayerMovement(registry);
-    shot(registry);
     update(registry);
 }
 
@@ -24,15 +21,6 @@ void InputSystem::checkExit(entt::registry& reg)
     if (window.isKeyPressed(glfw::key_escape))
     {
         window.close();
-    }
-}
-
-void InputSystem::shot(entt::registry& registry)
-{
-    const auto& window = registry.ctx().get<Window>();
-    if (window.isKeyPressed(glfw::key_z))
-    {
-        PlayerSys::shot(registry);
     }
 }
 

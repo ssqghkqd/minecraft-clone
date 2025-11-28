@@ -10,7 +10,7 @@ module;
 export module resources.AudioManager;
 import miniaudio;
 
-export namespace th
+export namespace mc
 {
 
 class AudioManager

@@ -7,7 +7,7 @@ module;
 #include <glm/ext.hpp>
 export module core.ConfigManager;
 
-export namespace th
+export namespace mc
 {
 struct bulletConfig
 {

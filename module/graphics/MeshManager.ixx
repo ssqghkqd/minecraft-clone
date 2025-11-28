@@ -9,14 +9,14 @@ module;
 export module graphics.MeshManager;
 
 
-export namespace th
+export namespace mc
 {
 class MeshManager
 {
 public:
     struct Vertex
     {
-        glm::vec2 pos;
+        glm::vec3 pos;
         glm::vec2 texCoord;
     };
     struct Mesh
@@ -27,7 +27,7 @@ public:
         int indexCount = 0;
     };
 
-    const Mesh& GetQuadMesh();
+    const Mesh& getCubeMesh();
 
     // 在拷贝和移动操作中禁用
     MeshManager(const MeshManager&) = delete;
@@ -39,7 +39,7 @@ public:
     ~MeshManager();
 
 private:
-    static Mesh CreateQuadMesh();
+    static Mesh createCubeMesh();
 
     std::unordered_map<std::string, std::unique_ptr<Mesh>> m_meshes;
 };

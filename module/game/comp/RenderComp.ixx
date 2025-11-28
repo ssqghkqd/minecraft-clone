@@ -5,13 +5,12 @@ module;
 #include <string>
 #include <glm/ext.hpp>
 export module game.comp:render;
-export namespace th
+export namespace mc
 {
 struct RenderComp
 {
     std::string textureName;
-    glm::vec4 color = glm::vec4(1.0f);
-    glm::vec2 size = glm::vec2(0.0f);
+    glm::vec3 size = glm::vec3(0.0f);
     bool isVisible = true;
 };
 } // namespace th

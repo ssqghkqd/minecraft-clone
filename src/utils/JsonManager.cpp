@@ -5,7 +5,7 @@ module utils.JsonManager;
 import utils.FileManager;
 import spdlog;
 
-namespace th::JsonManager
+namespace mc::JsonManager
 {
 void load(const fs::path& path, const std::string& name)
 {

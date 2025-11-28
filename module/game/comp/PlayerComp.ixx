@@ -5,7 +5,7 @@ module;
 #include <glm/ext.hpp>
 export module game.comp:player;
 
-export namespace th
+export namespace mc
 {
 
 struct PlayerComp

@@ -8,7 +8,7 @@ module;
 export module graphics.Shader;
 import opengl;
 
-export namespace th
+export namespace mc
 {
 class Shader
 {

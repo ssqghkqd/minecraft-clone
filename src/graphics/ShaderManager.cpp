@@ -4,7 +4,7 @@ module graphics.ShaderManager;
 import spdlog;
 import graphics.Shader;
 
-namespace th
+namespace mc
 {
 
 

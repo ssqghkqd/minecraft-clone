@@ -2,7 +2,7 @@ module;
 #include <chrono>
 module utils.Time;
 
-namespace th::Time
+namespace mc::Time
 {
 using Clock = std::chrono::steady_clock;
 using Seconds = std::chrono::duration<double>;

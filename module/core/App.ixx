@@ -6,7 +6,7 @@ module;
 export module core.App;
 import resources.AudioManager;
 
-export namespace th
+export namespace mc
 {
 
 class App

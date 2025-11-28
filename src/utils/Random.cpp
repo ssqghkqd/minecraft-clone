@@ -5,7 +5,7 @@ module;
 module utils.Random;
 
 
-namespace th::Random
+namespace mc::Random
 {
     std::mt19937 generator;
     

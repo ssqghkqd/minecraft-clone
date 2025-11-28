@@ -6,10 +6,10 @@ module;
 #include <glm/ext.hpp>
 export module game.comp:sprite;
 
-export namespace th
+export namespace mc
 {
 struct SpriteComp
 {
-    glm::vec2 velocity = glm::vec2(0.0f);
+    glm::vec3 velocity = glm::vec3(0.0f);
 };
 } // namespace th

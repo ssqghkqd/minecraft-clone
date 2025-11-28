@@ -4,7 +4,7 @@
 
 export module game.comp:drag;
 
-export namespace th
+export namespace mc
 {
 struct DragComp // 玩家移动时的平滑效果
 {

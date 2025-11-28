@@ -14,10 +14,9 @@ import core.InputSystem;
 import graphics.MeshManager;
 import graphics.ShaderManager;
 import graphics.RenderSystem;
-import game.cmd.CmdPlayer;
-import game.system.PlayerSys;
+import game.comp;
 
-namespace th::Init
+namespace mc::Init
 {
 void init(entt::registry& reg)
 {
@@ -29,30 +28,8 @@ void init(entt::registry& reg)
 void loadResources(entt::registry& reg)
 {
     auto& texture = reg.ctx().get<TextureManager>();
-    auto& audio = reg.ctx().get<AudioManager>();
-    auto& cmdPlayer = reg.ctx().get<cmd::CmdPlayer>();
-    auto& cfgM = reg.ctx().get<ConfigManager>();
-    // 纹理
-    texture.loadTexture("player", "textures/player.png");
-    texture.loadTexture("hitbox", "textures/hitbox.png");
-    texture.loadTexture("xiaoyu", "textures/xiaoyu.png");
-    texture.loadTexture("bg1", "textures/bg1.png");
-    texture.loadTexture("enemy", "textures/enemy.png");
-    // 音频
+    texture.loadTexture("grass_block", "textures/grass_block.png");
 
-    audio.loadSound("miss", "sounds/miss.wav");
-    audio.loadSound("enemy_shot", "sounds/enemy_shot.wav");
-    audio.loadSound("enemy_death", "sounds/enemy_death.wav");
-    audio.loadMusic("satori", "music/th11_09.mp3");
-
-    JsonManager::load("json/config/player.json", "config.player");
-    JsonManager::load("json/stage/stage1.json", "stage1");
-    JsonManager::load("json/config/bullet.json", "config.bullet");
-
-    auto& j = JsonManager::get("stage1");
-
-    cmdPlayer.load(j);
-    cfgM.loadBullet("config.bullet", "bullet_default");
 }
 
 void loadCore(entt::registry& reg)
@@ -67,7 +44,7 @@ void loadCore(entt::registry& reg)
     reg.ctx().emplace<InputSystem>();
     // mesh初始化网格
     auto& meshManager = reg.ctx().emplace<MeshManager>();
-    meshManager.GetQuadMesh();
+    meshManager.getCubeMesh();
     // shader管理器
     auto& shaderManager = reg.ctx().emplace<ShaderManager>();
     auto& shader = shaderManager.loadShader("default", "default.vs", "default.fs");
@@ -79,17 +56,19 @@ void loadCore(entt::registry& reg)
     // 音频系统
     reg.ctx().emplace<AudioManager>();
 
-    // 游戏播放器
-    reg.ctx().emplace<cmd::CmdPlayer>();
-
     reg.ctx().emplace<ConfigManager>();
 
 }
 
 void gameStatusSet(entt::registry& reg)
 {
-    auto& audio = reg.ctx().get<AudioManager>();
-    PlayerSys::createPlayer(reg);
-    audio.playMusic("satori");
+    // PlayerSys::createPlayer(reg);
+
+    auto block = reg.create();
+    auto& tf = reg.emplace<TransformComp>(block);
+    auto& rc = reg.emplace<RenderComp>(block);
+    tf.position = {0.0f, 0.0f, 0.0f};
+    rc.size = {1.0f, 1.0f, 1.0f};
+    rc.textureName = "grass_block";
 }
 }

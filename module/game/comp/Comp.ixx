@@ -3,8 +3,6 @@
 //
 
 export module game.comp;
-export import :bullet;
-export import :collision;
 export import :drag;
 export import :player;
 export import :render;

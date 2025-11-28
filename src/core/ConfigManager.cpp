@@ -4,7 +4,7 @@ module;
 module core.ConfigManager;
 import utils.JsonManager;
 
-namespace th
+namespace mc
 {
 
 void ConfigManager::loadBullet(const std::string& jsonName, const std::string& patternName)

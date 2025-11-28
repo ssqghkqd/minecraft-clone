@@ -11,7 +11,7 @@ import opengl;
 
 namespace fs = std::filesystem;
 
-export namespace th
+export namespace mc
 {
 class TextureManager
 {

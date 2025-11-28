@@ -6,14 +6,13 @@ module;
 #include <unordered_map>
 export module core.InputSystem;
 
-export namespace th
+export namespace mc
 {
 class InputSystem
 {
   public:
     void processInput(entt::registry& registry);
     static void checkExit(entt::registry& reg);
-    static void shot(entt::registry& registry);
 
     // 删除拷贝构造和赋值操作符
     InputSystem(const InputSystem&) = delete;

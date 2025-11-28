@@ -6,7 +6,7 @@ import utils.FileManager;
 import stb_image;
 import spdlog;
 
-namespace th
+namespace mc
 {
 TextureManager::~TextureManager()
 {

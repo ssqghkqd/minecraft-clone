@@ -7,11 +7,6 @@ set(CORES
 )
 
 set(GAMES
-        game/cmd/CmdPlayer.ixx
-        game/cmd/CmdVariant.ixx
-        game/cmd/impl/SinBullet.ixx
-        game/comp/BulletComp.ixx
-        game/comp/CollisionComp.ixx
         game/comp/DragComp.ixx
         game/comp/PlayerComp.ixx
         game/comp/RenderComp.ixx
@@ -19,10 +14,6 @@ set(GAMES
         game/comp/TagComp.ixx
         game/comp/Comp.ixx
         game/comp/TransformComp.ixx
-        game/system/BulletSys.ixx
-        game/system/CollisionSys.ixx
-        game/system/PlayerSys.ixx
-        game/system/SpriteMovementSys.ixx
 )
 
 set(GRAPHICS

@@ -9,14 +9,7 @@ set(CORE_SOURCES
         core/ConfigManager.cpp
 )
 
-set(GAME_SOURCES
-        game/system/BulletSys.cpp
-        game/system/CollisionSys.cpp
-        game/system/PlayerSys.cpp
-        game/system/SpriteMovementSys.cpp
-        game/cmd/impl/SinBullet.cpp
-        game/cmd/CmdPlayer.cpp
-)
+
 
 set(GRAPHICS_SOURCES
         graphics/MeshManager.cpp
@@ -61,7 +54,6 @@ target_sources(${PROJECT_NAME}
 
 # 包含目录 - 确保头文件能被找到
 target_include_directories(${PROJECT_NAME} PRIVATE
-        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
         $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/third_party>
         $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/third_party/entt/src>
         $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/third_party/spdlog/include>

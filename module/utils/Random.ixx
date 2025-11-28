@@ -6,7 +6,7 @@ module;
 
 export module utils.Random;
 
-export namespace th::Random
+export namespace mc::Random
 {
 void init();
 float range(float min, float max);

@@ -4,7 +4,7 @@
 
 export module game.comp:tag;
 
-export namespace th
+export namespace mc
 {
 struct PlayerTag
 {
@@ -14,9 +14,6 @@ struct EnemyTag
 {
 };
 
-struct BulletTag
-{
-};
 
 struct BackgroundTag
 {
