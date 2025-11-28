@@ -25,6 +25,7 @@ class Window
     void pollEvents() const;
     void close() const;
     void updateFPS();
+    void toggleCursor();
 
     Window();
 
@@ -39,5 +40,6 @@ class Window
     double m_lastTime = 0.0;
     int m_frameCount = 0;
     int m_fps = 0;
+    bool m_isCursorVisible = false;
 };
 } // namespace th

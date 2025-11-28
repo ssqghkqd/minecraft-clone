@@ -38,6 +38,7 @@ set(UTILS
         utils/Config.ixx
         utils/FileManager.ixx
         utils/JsonManager.ixx
+        utils/Math.ixx
 )
 
 set(THIRD_PARTY

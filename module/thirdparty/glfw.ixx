@@ -21,6 +21,8 @@ auto& windowShouldClose = glfwWindowShouldClose;
 auto& swapBuffers = glfwSwapBuffers;
 auto& pollEvents = glfwPollEvents;
 auto& getKey = glfwGetKey;
+auto& setCursorPosCallback = glfwSetCursorPosCallback;
+auto& setInputMode = glfwSetInputMode;
 
 using window = GLFWwindow;
 
@@ -47,4 +49,8 @@ constexpr auto key_a = GLFW_KEY_A;
 constexpr auto key_s = GLFW_KEY_S;
 constexpr auto key_d = GLFW_KEY_D;
 constexpr auto key_space = GLFW_KEY_SPACE;
+constexpr auto cursor = GLFW_CURSOR;
+constexpr auto cursor_disabled = GLFW_CURSOR_DISABLED;
+constexpr auto cursor_normal = GLFW_CURSOR_NORMAL;
+constexpr auto key_left_alt = GLFW_KEY_LEFT_ALT;
 } // namespace glfw

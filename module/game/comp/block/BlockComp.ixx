@@ -6,8 +6,8 @@ export namespace mc
 {
 enum class BlockType
 {
-    grass_block
-
+    grass_block,
+    cobblestone
 };
 struct BlockComp
 {

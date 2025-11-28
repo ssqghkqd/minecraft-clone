@@ -6,7 +6,7 @@ function(set_target_warnings target)
             -Wpedantic
             -Wshadow
             -Wunused
-            # -Werror
+            -Werror
     )
 endfunction()
 

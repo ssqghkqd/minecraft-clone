@@ -5,15 +5,25 @@ module core.InputSystem;
 import core.Window;
 import glfw;
 import game.system.PlayerSys;
+import Config;
+import utils.maths;
 
 namespace mc
 {
+double InputSystem::lastX = window_width * 0.5;
+double InputSystem::lastY = window_height * 0.5;
+double InputSystem::pitch = 0.0;
+double InputSystem::yaw = 0.0;
+
+// 89度对应的弧度制
+constexpr double radius_89 = 89 * 3.14159265358979323846 / 180.0;
 
 void InputSystem::processInput(entt::registry& registry)
 {
     // 检查是否退出
     checkExit(registry);
     PlayerSys::updateMovement(registry, registry.ctx().get<Window>());
+    checkToggleCursor(registry);
     update(registry);
 }
 
@@ -25,7 +35,13 @@ void InputSystem::checkExit(entt::registry& reg)
         window.close();
     }
 }
-
+void InputSystem::checkToggleCursor(entt::registry& reg)
+{
+    if (isKeyJustPressed(glfw::key_left_alt))
+    {
+        reg.ctx().get<Window>().toggleCursor();
+    }
+}
 
 void InputSystem::update(entt::registry& reg)
 {
@@ -62,4 +78,31 @@ bool InputSystem::isKeyReleased(int key) const
     return it != m_keyStates.end() && !it->second.current;
 }
 
-} // namespace th
+void InputSystem::mouseCallback([[maybe_unused]] glfw::window* window, double xPos, double yPos)
+{
+    // 必须有这个第一个参数 glfw要求 但不加maybe编译器报错
+    double offsetX = lastX - xPos;
+    double offsetY = lastY - yPos; // Y轴反转
+    lastX = xPos;
+    lastY = yPos;
+    offsetX *= sensitivity;
+    offsetY *= sensitivity;
+    pitch += offsetY;
+    yaw += offsetX;
+    if (pitch > radius_89)
+    {
+        pitch = radius_89;
+    }
+    if (pitch < -radius_89)
+    {
+        pitch = -radius_89;
+    }
+    yaw = Maths::normalizeAngle(yaw);
+}
+
+angles InputSystem::getPitchYaw()
+{
+    return {pitch, yaw};
+}
+
+} // namespace mc

@@ -42,6 +42,7 @@ void App::mainLoop()
         window.pollEvents();
         // 处理输入
         inputSystem.processInput(m_registry);
+        PlayerSys::update(m_registry);
         EntityMoveSys::update(m_registry, Time::getDeltaTime());
 
         renderSystem.update(m_registry, PlayerSys::getPlayerView(m_registry));

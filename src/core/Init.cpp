@@ -31,8 +31,10 @@ void loadResources(entt::registry& reg)
 {
     auto& texture = reg.ctx().get<TextureManager>();
     texture.loadTexture("grass_block", "textures/grass_block.png");
+    texture.loadTexture("cobblestone", "textures/cobblestone.png");
 
     BlockSys::registerBlockTex("grass_block", BlockType::grass_block);
+    BlockSys::registerBlockTex("cobblestone", BlockType::cobblestone);
 }
 
 void loadCore(entt::registry& reg)
@@ -65,6 +67,40 @@ void loadCore(entt::registry& reg)
 void gameStatusSet(entt::registry& reg)
 {
     PlayerSys::createPlayer(reg);
-    BlockSys::createBlock(reg, {0, 0, 0}, BlockType::grass_block);
+    for (int x = 0; x < 16; x++)
+    {
+        for (int z = 0; z < 16; z++)
+        {
+            BlockSys::createBlock(reg, {x, 0, z}, BlockType::grass_block);
+        }
+    }
+    for (int y = -16; y < 0; y++)
+    {
+        for (int z = 0; z < 16; z++)
+        {
+            BlockSys::createBlock(reg, {0, y, z}, BlockType::cobblestone);
+        }
+    }
+    for (int y = -16; y < 0; y++)
+    {
+        for (int x = 0; x < 16; x++)
+        {
+            BlockSys::createBlock(reg, {x, y, 0}, BlockType::cobblestone);
+        }
+    }
+    for (int y = -16; y < 0; y++)
+    {
+        for (int z = 0; z < 16; z++)
+        {
+            BlockSys::createBlock(reg, {16, y, z}, BlockType::cobblestone);
+        }
+    }
+    for (int y = -16; y < 0; y++)
+    {
+        for (int x = 0; x < 16; x++)
+        {
+            BlockSys::createBlock(reg, {x, y, 16}, BlockType::cobblestone);
+        }
+    }
 }
 } // namespace mc::Init

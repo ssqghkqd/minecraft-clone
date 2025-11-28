@@ -32,10 +32,9 @@ void RenderSystem::init(entt::registry& registry, const int screenWidth, const i
     m_cubeMesh = &meshManager.getCubeMesh();
 
     // 设置OpenGL状态
-    gl::enable(gl::blend);
-    gl::blendFunc(gl::src_alpha, gl::one_minus_src_alpha);
-    gl::enable(gl::cull_face); // 开启面剔除
-    gl::cullFace(gl::back);
+    gl::enable(gl::depth_test);
+    gl::enable(gl::cull_face);
+
     spdlog::debug("OPENGL 状态设置完成");
 
     setProjection(screenWidth, screenHeight);
@@ -49,7 +48,7 @@ void RenderSystem::setProjection(int width, int height)
 {
     const float aspectRatio = static_cast<float>(width) / static_cast<float>(height);
     m_projection = glm::perspective(
-        glm::radians(45.0f), // 视野角度 45度
+        glm::radians(90.0f), // 视野角度 45度
         aspectRatio,         // 宽高比
         0.1f,                // 近平面
         100.0f               // 远平面

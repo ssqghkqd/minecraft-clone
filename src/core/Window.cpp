@@ -4,6 +4,7 @@ import spdlog;
 import Config;
 import opengl;
 import utils.Time;
+import core.InputSystem;
 
 namespace mc
 {
@@ -64,6 +65,9 @@ void Window::init(int width, int height, const char* title)
     spdlog::info("GLAD初始化成功");
     gl::viewport(0, 0, width * window_scale, height * window_scale);
     glfw::swapInterval(1); // 启用垂直同步（锁定显示器刷新率）
+    glfw::setInputMode(m_window, glfw::cursor, glfw::cursor_disabled);
+    glfw::setCursorPosCallback(m_window, InputSystem::mouseCallback);
+
     spdlog::info("window初始化成功");
     m_inited = true;
 }
@@ -129,4 +133,19 @@ bool Window::isKeyRelease(int key) const
 {
     return glfw::getKey(m_window, key) == glfw::release;
 }
+
+void Window::toggleCursor()
+{
+    if (m_isCursorVisible)
+    {
+        glfw::setInputMode(m_window, glfw::cursor, glfw::cursor_normal);
+        m_isCursorVisible = false;
+    }
+    else
+    {
+        glfw::setInputMode(m_window, glfw::cursor, glfw::cursor_disabled);
+        m_isCursorVisible = true;
+    }
+}
+
 } // namespace th

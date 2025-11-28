@@ -6,8 +6,9 @@ export namespace mc
 {
 struct PlayerComp
 {
-    // 并不一定为单位向量
+    // 单位向量
     glm::vec3 forward = glm::vec3(0.0f);
+    glm::vec3 dir = glm::vec3(0.0f); // 移动的单位向量
 
 };
 }

@@ -3,12 +3,13 @@ module;
 #include <glm/glm.hpp>
 
 #include "glm/ext/matrix_transform.hpp"
-
 module game.system.PlayerSys;
 import game.comp;
 import spdlog;
 import core.Window;
 import glfw;
+import core.InputSystem;
+import utils.maths;
 
 namespace mc::PlayerSys
 {
@@ -31,37 +32,55 @@ void createPlayer(entt::registry& reg)
 
 void updateMovement(entt::registry& reg, const Window& window)
 {
-    auto& ec = reg.get<EntityComp>(m_player);
-    const auto& pc = reg.get<PlayerComp>(m_player);
+    auto& pc = reg.get<PlayerComp>(m_player);
     // 玩家朝向在xz平面上的投影的方向向量
     const glm::vec3 xzForward = glm::normalize(glm::vec3(pc.forward.x, 0.0f, pc.forward.z));
     // xzForward的右方向 通过与上向量叉乘得到
     const glm::vec3 xzRight = glm::normalize(glm::cross(xzForward, glm::vec3(0.0f, 1.0f, 0.0f)));
 
+    pc.dir = glm::vec3(0.0f);
     if (window.isKeyPressed(glfw::key_w))
     {
-        ec.vel += 4.0f * xzForward;
+        pc.dir += xzForward;
     }
     if (window.isKeyPressed(glfw::key_s))
     {
-        ec.vel += -4.0f * xzForward;
+        pc.dir -= xzForward;
     }
     if (window.isKeyPressed(glfw::key_d))
     {
-        ec.vel += 4.0f * xzRight;
+        pc.dir += xzRight;
     }
     if (window.isKeyPressed(glfw::key_a))
     {
-        ec.vel += -4.0f * xzRight;
+        pc.dir -= xzRight;
     }
     if (window.isKeyPressed(glfw::key_left_shift))
     {
-        ec.vel += -4.0f * glm::vec3(0.0f, 1.0f, 0.0f);
+        pc.dir += glm::vec3(0.0f, -1.0f, 0.0f);
     }
     if (window.isKeyPressed(glfw::key_space))
     {
-        ec.vel += 4.0f * glm::vec3(0.0f, 1.0f, 0.0f);
+        pc.dir += glm::vec3(0.0f, 1.0f, 0.0f);
     }
+
+    if (glm::length(pc.dir) > 0.0f)
+    {
+        pc.dir = glm::normalize(pc.dir);
+    }
+}
+
+
+
+void update(entt::registry& reg)
+{
+    auto& ec = reg.get<EntityComp>(m_player);
+    auto& pc = reg.get<PlayerComp>(m_player);
+    const auto targetVel = 10.0f * pc.dir;
+    auto [pitch, yaw] = InputSystem::getPitchYaw();
+
+    ec.vel = glm::mix(ec.vel, targetVel, 0.7f);
+    pc.forward = Maths::calculateForward(pitch, yaw);
 }
 
 glm::mat4 getPlayerView(entt::registry& reg)
@@ -71,4 +90,4 @@ glm::mat4 getPlayerView(entt::registry& reg)
     return glm::lookAt(tf.position, tf.position + pc.forward, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
-} // namespace mc
+} // namespace mc::PlayerSys

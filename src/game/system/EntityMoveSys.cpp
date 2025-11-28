@@ -13,8 +13,7 @@ void update(entt::registry& reg, float dt)
     static const auto view = reg.view<TransformComp, EntityComp>();
     view.each([dt](TransformComp& tf, const EntityComp& ec)
               {
-                  tf.position = ec.vel * dt;
-                  spdlog::info("玩家位置({},{}, {})", tf.position.x, tf.position.y, tf.position.z);
+                  tf.position += ec.vel * dt;
               });
 }
 } // namespace mc::EntityMoveSys

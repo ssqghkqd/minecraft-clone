@@ -28,6 +28,7 @@ set(UTILS_SOURCES
         utils/JsonManager.cpp
         utils/Random.cpp
         utils/Time.cpp
+        utils/Math.cpp
 )
 
 set(RESOURCES_SOURCES
