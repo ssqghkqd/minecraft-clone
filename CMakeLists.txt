@@ -1,0 +1,45 @@
+cmake_minimum_required(VERSION 3.28)
+project(minecraft VERSION 1.0.0 LANGUAGES CXX)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
+# 基础配置
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+
+if(NOT DEFINED CMAKE_C_COMPILE_OBJECT)
+    set(CMAKE_C_COMPILE_OBJECT "<CMAKE_C_COMPILER> <DEFINES> <INCLUDES> <FLAGS> -o <OBJECT> -c <SOURCE>")
+    message(STATUS "手动设置 CMAKE_C_COMPILE_OBJECT")
+endif()
+
+if(NOT DEFINED CMAKE_C_CREATE_STATIC_LIBRARY)
+    set(CMAKE_C_CREATE_STATIC_LIBRARY "<CMAKE_AR> qc <TARGET> <OBJECTS>")
+    message(STATUS "手动设置 CMAKE_C_CREATE_STATIC_LIBRARY")
+endif()
+
+if(NOT DEFINED CMAKE_C_ARCHIVE_FINISH)
+    set(CMAKE_C_ARCHIVE_FINISH "<CMAKE_RANLIB> <TARGET>")
+    message(STATUS "手动设置 CMAKE_C_ARCHIVE_FINISH")
+endif()
+
+# 包含CMake模块
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
+# 编译器配置
+include(CompilerConfig)
+include(CCacheConfig)
+
+# 添加子目录
+add_subdirectory(third_party/GLFW)
+add_subdirectory(third_party/glad)
+
+
+add_executable(${PROJECT_NAME})
+
+# 主项目
+add_subdirectory(module)
+add_subdirectory(src)
