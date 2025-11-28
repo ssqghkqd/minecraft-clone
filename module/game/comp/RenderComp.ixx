@@ -11,6 +11,6 @@ struct RenderComp
 {
     std::string textureName;
     glm::vec3 size = glm::vec3(0.0f);
-    bool isVisible = true;
+    glm::mat4 view = glm::mat4(0.0f);
 };
 } // namespace th

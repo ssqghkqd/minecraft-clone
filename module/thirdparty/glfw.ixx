@@ -42,4 +42,9 @@ constexpr auto key_up = GLFW_KEY_UP;
 constexpr auto key_right = GLFW_KEY_RIGHT;
 constexpr auto key_left = GLFW_KEY_LEFT;
 constexpr auto key_down = GLFW_KEY_DOWN;
+constexpr auto key_w = GLFW_KEY_W;
+constexpr auto key_a = GLFW_KEY_A;
+constexpr auto key_s = GLFW_KEY_S;
+constexpr auto key_d = GLFW_KEY_D;
+constexpr auto key_space = GLFW_KEY_SPACE;
 } // namespace glfw

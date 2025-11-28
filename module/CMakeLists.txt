@@ -7,13 +7,17 @@ set(CORES
 )
 
 set(GAMES
-        game/comp/DragComp.ixx
-        game/comp/PlayerComp.ixx
         game/comp/RenderComp.ixx
-        game/comp/SpriteComp.ixx
         game/comp/TagComp.ixx
         game/comp/Comp.ixx
         game/comp/TransformComp.ixx
+        game/comp/EntityComp.ixx
+        game/comp/block/BlockComp.ixx
+        game/comp/PlayerComp.ixx
+
+        game/system/BlockSys.ixx
+        game/system/PlayerSys.ixx
+        game/system/EntityMoveSys.ixx
 )
 
 set(GRAPHICS

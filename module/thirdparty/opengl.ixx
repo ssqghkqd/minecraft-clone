@@ -48,6 +48,7 @@ auto& texParameteri = glTexParameteri;
 auto& texImage2D = glTexImage2D;
 auto& generateMipmap = glGenerateMipmap;
 auto& deleteTextures = glDeleteTextures;
+auto& cullFace = glCullFace;
 
 // 先占个坑 后续再加更多需要的符号
 using loadproc = GLADloadproc;
@@ -86,6 +87,9 @@ constexpr auto rgb = GL_RGB;
 constexpr auto red = GL_RED;
 constexpr auto rgba = GL_RGBA;
 constexpr auto unsigned_byte = GL_UNSIGNED_BYTE;
+constexpr auto cull_face = GL_CULL_FACE;
+constexpr auto back = GL_BACK;
+constexpr auto depth_buffer_bit = GL_DEPTH_BUFFER_BIT;
 } // namespace gl
 
 export namespace gf

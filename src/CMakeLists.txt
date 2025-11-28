@@ -9,7 +9,11 @@ set(CORE_SOURCES
         core/ConfigManager.cpp
 )
 
-
+set(GAME_SOURCES
+        game/system/PlayerSys.cpp
+        game/system/BlockSys.cpp
+        game/system/EntityMoveSys.cpp
+)
 
 set(GRAPHICS_SOURCES
         graphics/MeshManager.cpp

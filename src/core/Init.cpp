@@ -15,6 +15,8 @@ import graphics.MeshManager;
 import graphics.ShaderManager;
 import graphics.RenderSystem;
 import game.comp;
+import game.system.PlayerSys;
+import game.system.BlockSys;
 
 namespace mc::Init
 {
@@ -30,6 +32,7 @@ void loadResources(entt::registry& reg)
     auto& texture = reg.ctx().get<TextureManager>();
     texture.loadTexture("grass_block", "textures/grass_block.png");
 
+    BlockSys::registerBlockTex("grass_block", BlockType::grass_block);
 }
 
 void loadCore(entt::registry& reg)
@@ -57,18 +60,11 @@ void loadCore(entt::registry& reg)
     reg.ctx().emplace<AudioManager>();
 
     reg.ctx().emplace<ConfigManager>();
-
 }
 
 void gameStatusSet(entt::registry& reg)
 {
-    // PlayerSys::createPlayer(reg);
-
-    auto block = reg.create();
-    auto& tf = reg.emplace<TransformComp>(block);
-    auto& rc = reg.emplace<RenderComp>(block);
-    tf.position = {0.0f, 0.0f, 0.0f};
-    rc.size = {1.0f, 1.0f, 1.0f};
-    rc.textureName = "grass_block";
+    PlayerSys::createPlayer(reg);
+    BlockSys::createBlock(reg, {0, 0, 0}, BlockType::grass_block);
 }
-}
+} // namespace mc::Init

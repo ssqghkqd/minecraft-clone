@@ -20,11 +20,14 @@ class RenderSystem
 
     void init(entt::registry& registry, int screenWidth, int screenHeight);
 
-    void update(entt::registry& registry) const;
+    void update(entt::registry& registry, const glm::mat4& viewMat) const;
 
     void setProjection(int width, int height);
 
-    void renderEntity(entt::registry& registry, TransformComp& tf, RenderComp& rc) const;
+    void renderEntity(entt::registry& registry,
+                      const TransformComp& tf,
+                      const RenderComp& rc,
+                      const glm::mat4& view) const;
 
     // 删除拷贝构造和赋值操作符
     RenderSystem(const RenderSystem&) = delete;
@@ -40,11 +43,6 @@ class RenderSystem
 
   private:
     glm::mat4 m_projection{};
-    glm::mat4 m_view = glm::lookAt(
-        glm::vec3(5.0f, 0.0f, 0.0f), // 相机位置 (2,0,0)
-        glm::vec3(0.0f, 0.0f, 0.0f), // 看向原点
-        glm::vec3(0.0f, 1.0f, 0.0f)  // 上向量
-    );
     bool inited = false;
 
     const Shader* m_shader = nullptr;

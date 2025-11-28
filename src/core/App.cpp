@@ -8,6 +8,8 @@ import core.Init;
 import core.Window;
 import core.InputSystem;
 import graphics.RenderSystem;
+import game.system.PlayerSys;
+import game.system;
 
 namespace mc
 {
@@ -40,19 +42,14 @@ void App::mainLoop()
         window.pollEvents();
         // 处理输入
         inputSystem.processInput(m_registry);
-        // 更新玩家移动
-        //PlayerSys::update(m_registry, (float)Time::getDeltaTime());
-        // 更新所有精灵移动
-        //SpriteMovementSys::update(m_registry, (float)Time::getDeltaTime());
+        EntityMoveSys::update(m_registry, Time::getDeltaTime());
 
-
-
-        renderSystem.update(m_registry);
-        // if (currentTime - lastStatTime >= stat_interval)
-        // {
-        //     update(audio);
-        //     lastStatTime = currentTime; // 重置计时器
-        // }
+        renderSystem.update(m_registry, PlayerSys::getPlayerView(m_registry));
+        if (currentTime - lastStatTime >= stat_interval)
+        {
+            update(audio);
+            lastStatTime = currentTime; // 重置计时器
+        }
 
         window.swapBuffers();
     }

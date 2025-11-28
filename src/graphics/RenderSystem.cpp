@@ -1,8 +1,6 @@
 module;
 #include <entt/entt.hpp>
 #include <glm/ext.hpp>
-
-#include "glad.h"
 module graphics.RenderSystem;
 import Config;
 import spdlog;
@@ -13,6 +11,7 @@ import graphics.TextureManager;
 
 namespace mc
 {
+
 RenderSystem::RenderSystem(entt::registry& registry)
 {
     init(registry, window_width, window_height);
@@ -35,8 +34,8 @@ void RenderSystem::init(entt::registry& registry, const int screenWidth, const i
     // 设置OpenGL状态
     gl::enable(gl::blend);
     gl::blendFunc(gl::src_alpha, gl::one_minus_src_alpha);
-    glEnable(GL_CULL_FACE);  // 开启面剔除
-    glCullFace(GL_BACK);
+    gl::enable(gl::cull_face); // 开启面剔除
+    gl::cullFace(gl::back);
     spdlog::debug("OPENGL 状态设置完成");
 
     setProjection(screenWidth, screenHeight);
@@ -61,17 +60,17 @@ void RenderSystem::setProjection(int width, int height)
     m_shader->set("projection", m_projection);
 }
 
-void RenderSystem::renderEntity(entt::registry& registry, TransformComp& tf, RenderComp& rc) const
+void RenderSystem::renderEntity(entt::registry& registry,
+                                const TransformComp& tf,
+                                const RenderComp& rc,
+                                const glm::mat4& view) const
 {
-    if (!rc.isVisible)
-        return;
-    //spdlog::info("渲染实体 - 位置: ({}, {}, {})", tf.position.x, tf.position.y, tf.position.z);
     auto model = glm::mat4(1.0f);
     model = glm::translate(model, tf.position);
 
     m_shader->use();
     m_shader->set("model", model);
-    m_shader->set("view", m_view);
+    m_shader->set("view", view);
     m_shader->set("projection", m_projection);
 
     const MeshManager::Mesh* mesh = m_cubeMesh;
@@ -89,14 +88,14 @@ void RenderSystem::renderEntity(entt::registry& registry, TransformComp& tf, Ren
     gf::drawElements(gl::triangles, mesh->indexCount, gl::unsigned_int, nullptr);
 }
 
-void RenderSystem::update(entt::registry& registry) const
+void RenderSystem::update(entt::registry& registry, const glm::mat4& viewMat) const
 {
-    gl::clear(gl::color_buffer_bit);
+    gl::clear(gl::color_buffer_bit | gl::depth_buffer_bit);
 
-    auto view = registry.view<TransformComp, RenderComp>();
-    view.each([&registry, this](auto& tf, auto& rc)
+    const auto view = registry.view<TransformComp, RenderComp>();
+    view.each([&registry, this, viewMat](const TransformComp& tf, const RenderComp& rc)
               {
-                  renderEntity(registry, tf, rc);
+                  renderEntity(registry, tf, rc, viewMat);
               });
 }
 } // namespace mc

@@ -4,6 +4,7 @@ module;
 module core.InputSystem;
 import core.Window;
 import glfw;
+import game.system.PlayerSys;
 
 namespace mc
 {
@@ -12,6 +13,7 @@ void InputSystem::processInput(entt::registry& registry)
 {
     // 检查是否退出
     checkExit(registry);
+    PlayerSys::updateMovement(registry, registry.ctx().get<Window>());
     update(registry);
 }
 
@@ -23,7 +25,6 @@ void InputSystem::checkExit(entt::registry& reg)
         window.close();
     }
 }
-
 
 
 void InputSystem::update(entt::registry& reg)

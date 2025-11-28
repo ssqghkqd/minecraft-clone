@@ -3,9 +3,10 @@
 //
 
 export module game.comp;
-export import :drag;
-export import :player;
+
 export import :render;
-export import :sprite;
 export import :tag;
 export import :transform;
+export import :block;
+export import :player;
+export import :entity;
