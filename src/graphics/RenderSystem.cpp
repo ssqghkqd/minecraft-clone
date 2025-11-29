@@ -80,12 +80,9 @@ void RenderSystem::renderEntity(entt::registry& registry,
     const MeshManager::Mesh* mesh = m_cubeMesh;
 
     // TODO 优化批处理
-    if (!rc.textureName.empty())
-    {
-        m_shader->set("Texture", 0);
-        gl::activeTexture(gl::texture0);
-        registry.ctx().get<TextureManager>().bind(rc.textureName);
-    }
+    m_shader->set("Texture", 0);
+    gl::activeTexture(gl::texture0);
+    registry.ctx().get<TextureManager>().bind(rc.textureName);
 
     // TODO 这里可以用实例化渲染 但目前还是不用并且我不知道实例化渲染需要准备什么（
     gl::bindVertexArray(mesh->vao);

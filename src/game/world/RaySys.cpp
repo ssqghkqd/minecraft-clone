@@ -13,7 +13,7 @@ std::optional<RayHitResult> checkRayHit(const Ray& ray, const World& world)
 {
     RayHitResult result;
     glm::vec3 currentPos = ray.start;
-    glm::vec3 previousPos = currentPos; // 上一步的向量
+    glm::vec3 previousPos = currentPos; // 上一步的向量a
     const glm::vec3 dir = ray.direction;
 
     for (int i = 0; i < max_steps; i++)

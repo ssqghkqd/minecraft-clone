@@ -1,9 +1,11 @@
 //
 // Created by ss on 2025/11/22.
 //
-
+module;
+#include "entt/entt.hpp"
 export module core.Window;
 import glfw;
+
 
 export namespace mc
 {
@@ -26,6 +28,7 @@ class Window
     void close() const;
     void updateFPS();
     void toggleCursor();
+    void registerWindowSizeCallBack(entt::registry& reg);
 
     Window();
 
@@ -41,5 +44,6 @@ class Window
     int m_frameCount = 0;
     int m_fps = 0;
     bool m_isCursorVisible = false;
+    entt::registry* m_registry = nullptr;
 };
 } // namespace th

@@ -48,7 +48,7 @@ void loadCore(entt::registry& reg)
     spdlog::set_pattern("[%H:%M:%S][%l] - %v");
     spdlog::info("游戏开始初始化");
     // 初始化并存入注册表
-    reg.ctx().emplace<Window>();
+    auto& window = reg.ctx().emplace<Window>();
     // 输入系统不初始化
     reg.ctx().emplace<InputSystem>(reg);
     // mesh初始化网格
@@ -69,6 +69,8 @@ void loadCore(entt::registry& reg)
     reg.ctx().emplace<ConfigManager>();
 
     reg.ctx().emplace<World>();
+    window.registerWindowSizeCallBack(reg);
+
 }
 
 void gameStatusSet(entt::registry& reg)
@@ -78,9 +80,9 @@ void gameStatusSet(entt::registry& reg)
     auto& world = reg.ctx().get<World>();
     audio.playMusic("creeper?");
 
-    for (int i = -128; i < 128; i++)
+    for (int i = -16; i < 16; i++)
     {
-        for (int j = -128; j < 128; j++)
+        for (int j = -16; j < 16; j++)
         {
             world.createBlock(reg, {i,0,j}, BlockType::grass_block);
             world.createBlock(reg, {i,-1,j}, BlockType::cobblestone);

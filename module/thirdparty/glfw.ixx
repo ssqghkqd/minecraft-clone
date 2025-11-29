@@ -24,6 +24,9 @@ auto& getKey = glfwGetKey;
 auto& setCursorPosCallback = glfwSetCursorPosCallback;
 auto& setInputMode = glfwSetInputMode;
 auto& setMouseButtonCallback = glfwSetMouseButtonCallback;
+auto& setWindowSizeCallback = glfwSetWindowSizeCallback;
+auto& setWindowUserPointer = glfwSetWindowUserPointer;
+auto& getWindowUserPointer = glfwGetWindowUserPointer;
 
 using window = GLFWwindow;
 

@@ -51,5 +51,6 @@ class RenderSystem
     const Shader* m_uiShader = nullptr;
     const MeshManager::Mesh* m_cubeMesh = nullptr;
     const MeshManager::Mesh* m_quadMesh = nullptr;
+
 };
 } // namespace mc

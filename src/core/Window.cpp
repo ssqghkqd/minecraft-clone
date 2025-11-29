@@ -5,6 +5,8 @@ import Config;
 import opengl;
 import utils.Time;
 import core.InputSystem;
+import graphics.RenderSystem;
+import entt;
 
 namespace mc
 {
@@ -13,7 +15,6 @@ Window::Window()
 {
     init(window_width, window_height, window_title);
 }
-
 
 void Window::init(int width, int height, const char* title)
 {
@@ -36,14 +37,13 @@ void Window::init(int width, int height, const char* title)
 
     if (m_window)
     {
-        spdlog::warn("窗口已经创建");
+        spdlog::warn("窗口已经创建1");
     }
     glfw::windowHint(glfw::scale_to_monitor, glfw::FALSE);  // 禁用系统缩放
     glfw::windowHint(glfw::scale_framebuffer, glfw::FALSE); // 禁用帧缓冲缩放
     glfw::windowHint(glfw::context_version_major, 3);
     glfw::windowHint(glfw::context_version_minor, 3);
     glfw::windowHint(glfw::opengl_profile, glfw::opengl_core_profile);
-    glfw::windowHint(glfw::resizable, 0);
     m_window = glfw::createWindow(width * window_scale, height * window_scale, title, nullptr, nullptr);
 
     // 检查是否成功创建窗口
@@ -68,7 +68,7 @@ void Window::init(int width, int height, const char* title)
     glfw::setInputMode(m_window, glfw::cursor, glfw::cursor_disabled);
     glfw::setCursorPosCallback(m_window, InputSystem::mouseCallback);
     glfw::setMouseButtonCallback(m_window, InputSystem::mouseButtonCallback);
-
+    glfw::setWindowUserPointer(m_window, this);
     spdlog::info("window初始化成功");
     m_inited = true;
 }
@@ -102,7 +102,6 @@ void Window::updateFPS()
     }
 }
 
-
 void Window::close() const
 {
     glfw::setWindowShouldClose(m_window, true);
@@ -126,7 +125,6 @@ void Window::pollEvents() const
 // 判断按键函数
 bool Window::isKeyPressed(int key) const
 {
-
     return glfw::getKey(m_window, key) == glfw::press;
 }
 
@@ -149,4 +147,16 @@ void Window::toggleCursor()
     }
 }
 
-} // namespace th
+void Window::registerWindowSizeCallBack(entt::registry& reg)
+{
+    m_registry = &reg;
+    glfw::setWindowSizeCallback(m_window, [](glfw::window* window, int width_, int height_)
+                                {
+                                    gl::viewport(0, 0, width_, height_);
+                                    const auto self = (Window*)glfw::getWindowUserPointer(window);
+                                    auto& rs = self->m_registry->ctx().get<RenderSystem>();
+                                    rs.setProjection(width_, height_);
+                                });
+}
+
+} // namespace mc

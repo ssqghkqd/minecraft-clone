@@ -28,11 +28,11 @@ void App::mainLoop()
 {
     auto& window = m_registry.ctx().get<Window>();
     auto& inputSystem = m_registry.ctx().get<InputSystem>();
-    const auto& renderSystem = m_registry.ctx().get<RenderSystem>();
+    auto& renderSystem = m_registry.ctx().get<RenderSystem>();
     auto& audio = m_registry.ctx().get<AudioManager>();
 
     Time::gameStart();
-    spdlog::info("游戏开始");
+    spdlog::info("游戏开始1");
     double lastStatTime = 0.0;
     while (!window.shouldClose())
     {
