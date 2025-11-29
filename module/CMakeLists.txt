@@ -18,7 +18,8 @@ set(GAMES
         game/system/PlayerSys.ixx
         game/system/EntityMoveSys.ixx
 
-        game/World.ixx
+        game/world/World.ixx
+        game/world/RaySys.ixx
 )
 
 set(GRAPHICS

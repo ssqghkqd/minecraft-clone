@@ -13,7 +13,8 @@ set(GAME_SOURCES
         game/system/PlayerSys.cpp
         game/system/EntityMoveSys.cpp
 
-        game/World.cpp
+        game/world/World.cpp
+        game/world/RaySys.cpp
 )
 
 set(GRAPHICS_SOURCES

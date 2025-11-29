@@ -18,6 +18,11 @@ double InputSystem::yaw = 0.0;
 // 89度对应的弧度制
 constexpr double radius_89 = 89 * 3.14159265358979323846 / 180.0;
 
+InputSystem::InputSystem(entt::registry& reg)
+{
+    m_registry = &reg;
+}
+
 void InputSystem::processInput(entt::registry& registry)
 {
     // 检查是否退出
@@ -104,6 +109,18 @@ void InputSystem::mouseCallback([[maybe_unused]] glfw::window* window, double xP
 angles InputSystem::getPitchYaw()
 {
     return {pitch, yaw};
+}
+
+void InputSystem::mouseButtonCallback([[maybe_unused]]glfw::window* window, int button, int action, [[maybe_unused]]int mods)
+{
+    if (button == glfw::mouse_button_left && action == glfw::press)
+    {
+        PlayerSys::destroyBlock(*m_registry);
+    }
+    if (button == glfw::mouse_button_right && action == glfw::press)
+    {
+        PlayerSys::placeBlock(*m_registry);
+    }
 }
 
 } // namespace mc

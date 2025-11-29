@@ -62,4 +62,9 @@ void World::registerBlockTex(BlockType type, const std::string& texName)
     }
     m_blockTextures.emplace(type, texName);
 }
+
+bool World::isExistBlock(const glm::ivec3& pos) const
+{
+    return m_blockMap.contains(pos);
+}
 } // namespace mc

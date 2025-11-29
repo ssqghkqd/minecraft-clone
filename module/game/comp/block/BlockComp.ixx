@@ -8,7 +8,8 @@ export namespace mc
 enum class BlockType
 {
     grass_block,
-    cobblestone
+    cobblestone,
+    planks
 };
 enum class BlockError {
     already_exists,

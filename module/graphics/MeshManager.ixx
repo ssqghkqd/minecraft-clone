@@ -19,6 +19,11 @@ public:
         glm::vec3 pos;
         glm::vec2 texCoord;
     };
+    struct Vertex2d
+    {
+        glm::vec2 pos;
+        glm::vec2 texCoord;
+    };
     struct Mesh
     {
         unsigned int vao = 0;
@@ -28,6 +33,7 @@ public:
     };
 
     const Mesh& getCubeMesh();
+    const Mesh& getQuadMesh();
 
     // 在拷贝和移动操作中禁用
     MeshManager(const MeshManager&) = delete;
@@ -40,6 +46,7 @@ public:
 
 private:
     static Mesh createCubeMesh();
+    static Mesh createQuadMesh();
 
     std::unordered_map<std::string, std::unique_ptr<Mesh>> m_meshes;
 };

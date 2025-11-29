@@ -30,9 +30,8 @@ class InputSystem
     InputSystem(InputSystem&&) = delete;
     InputSystem& operator=(InputSystem&&) = delete;
 
-    InputSystem() = default;
+    explicit InputSystem(entt::registry& reg);
     ~InputSystem() = default;
-
 
     // 更新所有按键状态（每帧调用）
     void update(entt::registry& reg);
@@ -47,6 +46,7 @@ class InputSystem
     bool isKeyReleased(int key) const;
 
     static void mouseCallback(glfw::window* window, double xPos, double yPos);
+    static void mouseButtonCallback(glfw::window* window, int button, int action, int mods);
     static angles getPitchYaw();
 
     void checkToggleCursor(entt::registry& reg);
@@ -58,9 +58,11 @@ class InputSystem
         bool previous = false; // 上一帧状态
     };
 
-    static double lastX, lastY, pitch, yaw;
+    static double lastX,
+        lastY, pitch, yaw;
     constexpr static double sensitivity = 0.001;
+    inline static entt::registry* m_registry = nullptr;
 
     std::unordered_map<int, KeyState> m_keyStates;
 };
-} // namespace th
+} // namespace mc

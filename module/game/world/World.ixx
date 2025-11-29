@@ -19,6 +19,7 @@ class World
     std::expected<entt::entity, BlockError> createBlock(entt::registry& reg, const glm::ivec3& pos, BlockType type);
     void destroyBlock(entt::registry& reg, const glm::ivec3& pos);
     void registerBlockTex(BlockType type, const std::string& texName);
+    bool isExistBlock(const glm::ivec3& pos) const;
 
   private:
     std::unordered_map<glm::ivec3, entt::entity> m_blockMap{};

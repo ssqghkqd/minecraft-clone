@@ -32,9 +32,12 @@ void loadResources(entt::registry& reg)
     auto& world = reg.ctx().get<World>();
     texture.loadTexture("grass_block", "textures/grass_block.png");
     texture.loadTexture("cobblestone", "textures/cobblestone.png");
+    texture.loadTexture("planks", "textures/planks.png");
+    texture.loadTexture("crosshair", "textures/crosshair.png");
 
     world.registerBlockTex(BlockType::grass_block, "grass_block");
     world.registerBlockTex(BlockType::cobblestone, "cobblestone");
+    world.registerBlockTex(BlockType::planks, "planks");
     audio.loadMusic("creeper?", "musics/revenge.mp3");
 }
 
@@ -47,13 +50,14 @@ void loadCore(entt::registry& reg)
     // 初始化并存入注册表
     reg.ctx().emplace<Window>();
     // 输入系统不初始化
-    reg.ctx().emplace<InputSystem>();
+    reg.ctx().emplace<InputSystem>(reg);
     // mesh初始化网格
     auto& meshManager = reg.ctx().emplace<MeshManager>();
     meshManager.getCubeMesh();
     // shader管理器
     auto& shaderManager = reg.ctx().emplace<ShaderManager>();
     auto& shader = shaderManager.loadShader("default", "default.vs", "default.fs");
+    shaderManager.loadShader("ui", "ui.vs", "ui.fs");
     spdlog::info("加载着色器{}", shader.getID());
     // 初始化渲染系统 （必须放在此处，依赖shader管理器和mesh管理器）
     reg.ctx().emplace<RenderSystem>(reg);
@@ -74,40 +78,12 @@ void gameStatusSet(entt::registry& reg)
     auto& world = reg.ctx().get<World>();
     audio.playMusic("creeper?");
 
-    for (int x = 0; x < 16; x++)
+    for (int i = -128; i < 128; i++)
     {
-        for (int z = 0; z < 16; z++)
+        for (int j = -128; j < 128; j++)
         {
-            world.createBlock(reg, {x, 0, z}, BlockType::grass_block);
-            world.createBlock(reg, {x, -16, z}, BlockType::cobblestone);
-        }
-    }
-    for (int y = -16; y < 0; y++)
-    {
-        for (int z = 0; z < 16; z++)
-        {
-            world.createBlock(reg, {0, y, z}, BlockType::cobblestone);
-        }
-    }
-    for (int y = -16; y < 0; y++)
-    {
-        for (int x = 0; x < 16; x++)
-        {
-            world.createBlock(reg, {x, y, 0}, BlockType::cobblestone);
-        }
-    }
-    for (int y = -16; y < 0; y++)
-    {
-        for (int z = 0; z < 16; z++)
-        {
-            world.createBlock(reg, {15, y, z}, BlockType::cobblestone);
-        }
-    }
-    for (int y = -16; y < 0; y++)
-    {
-        for (int x = 0; x < 16; x++)
-        {
-            world.createBlock(reg, {x, y, 15}, BlockType::cobblestone);
+            world.createBlock(reg, {i,0,j}, BlockType::grass_block);
+            world.createBlock(reg, {i,-1,j}, BlockType::cobblestone);
         }
     }
 }

@@ -23,6 +23,7 @@ auto& pollEvents = glfwPollEvents;
 auto& getKey = glfwGetKey;
 auto& setCursorPosCallback = glfwSetCursorPosCallback;
 auto& setInputMode = glfwSetInputMode;
+auto& setMouseButtonCallback = glfwSetMouseButtonCallback;
 
 using window = GLFWwindow;
 
@@ -53,4 +54,6 @@ constexpr auto cursor = GLFW_CURSOR;
 constexpr auto cursor_disabled = GLFW_CURSOR_DISABLED;
 constexpr auto cursor_normal = GLFW_CURSOR_NORMAL;
 constexpr auto key_left_alt = GLFW_KEY_LEFT_ALT;
+constexpr auto mouse_button_left = GLFW_MOUSE_BUTTON_LEFT;
+constexpr auto mouse_button_right = GLFW_MOUSE_BUTTON_RIGHT;
 } // namespace glfw

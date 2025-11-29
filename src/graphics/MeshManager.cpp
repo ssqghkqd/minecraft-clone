@@ -3,12 +3,17 @@ module;
 module graphics.MeshManager;
 import opengl;
 
-
 namespace mc
 {
 const MeshManager::Mesh& MeshManager::getCubeMesh()
 {
     static const Mesh quadMesh = createCubeMesh(); // 静态初始化，只创建一次
+    return quadMesh;
+}
+
+const MeshManager::Mesh& MeshManager::getQuadMesh()
+{
+    static const Mesh quadMesh = createQuadMesh();
     return quadMesh;
 }
 
@@ -61,18 +66,47 @@ MeshManager::Mesh MeshManager::createCubeMesh()
     // 索引数据 - 每个面2个三角形
     const std::vector<unsigned int> indices = {
         // 前面
-        0, 1, 2, 2, 3, 0,
+        0,
+        1,
+        2,
+        2,
+        3,
+        0,
         // 后面
-        4, 5, 6, 6, 7, 4,
+        4,
+        5,
+        6,
+        6,
+        7,
+        4,
         // 右面
-        8, 9, 10, 10, 11, 8,
+        8,
+        9,
+        10,
+        10,
+        11,
+        8,
         // 左面
-        12, 13, 14, 14, 15, 12,
+        12,
+        13,
+        14,
+        14,
+        15,
+        12,
         // 上面
-        16, 17, 18, 18, 19, 16,
+        16,
+        17,
+        18,
+        18,
+        19,
+        16,
         // 下面
-        20, 21, 22, 22, 23, 20
-    };
+        20,
+        21,
+        22,
+        22,
+        23,
+        20};
 
     gl::genVertexArrays(1, &mesh.vao);
     gl::genBuffers(1, &mesh.vbo);
@@ -102,6 +136,57 @@ MeshManager::Mesh MeshManager::createCubeMesh()
     return mesh;
 }
 
+MeshManager::Mesh MeshManager::createQuadMesh()
+{
+    Mesh mesh;
+
+    // 顶点数据 (位置 + UV)
+    const std::vector<Vertex2d> vertices = {
+        // 位置          // UV
+        {{-0.5f, -0.5f}, {0.0f, 0.0f}}, // 左下
+        {{0.5f, -0.5f}, {1.0f, 0.0f}},  // 右下
+        {{0.5f, 0.5f}, {1.0f, 1.0f}},   // 右上
+        {{-0.5f, 0.5f}, {0.0f, 1.0f}}   // 左上
+    };
+
+    // 索引数据
+    const std::vector<unsigned int> indices = {
+        0,
+        1,
+        2, // 第一个三角形
+        2,
+        3,
+        0 // 第二个三角形
+    };
+
+    gl::genVertexArrays(1, &mesh.vao);
+    gl::genBuffers(1, &mesh.vbo);
+    gl::genBuffers(1, &mesh.ebo);
+
+    gl::bindVertexArray(mesh.vao);
+
+    // 顶点缓冲区 (使用Vertex结构)
+    gl::bindBuffer(gl::array_buffer, mesh.vbo);
+    gl::bufferData(gl::array_buffer, vertices.size() * sizeof(Vertex2d), vertices.data(), gl::static_draw);
+
+    // 索引缓冲区
+    gl::bindBuffer(gl::element_array_buffer, mesh.ebo);
+    gl::bufferData(gl::element_array_buffer, indices.size() * sizeof(unsigned int), indices.data(), gl::static_draw);
+
+    // 位置属性 (属性索引0)
+    gl::vertexAttribPointer(0, 2, gl::FLOAT, gl::FALSE, sizeof(Vertex2d), (void*)offsetof(Vertex2d, pos));
+    gl::enableVertexAttribArray(0);
+
+    // UV属性 (属性索引1)
+    gl::vertexAttribPointer(1, 2, gl::FLOAT, gl::FALSE, sizeof(Vertex2d), (void*)offsetof(Vertex2d, texCoord));
+    gl::enableVertexAttribArray(1);
+
+    gl::bindVertexArray(0);
+    mesh.indexCount = static_cast<int>(indices.size());
+
+    return mesh;
+}
+
 MeshManager::~MeshManager()
 {
     // 清理所有网格资源
@@ -115,4 +200,4 @@ MeshManager::~MeshManager()
             gl::deleteBuffers(1, &meshPtr->ebo);
     }
 }
-} // namespace th
+} // namespace mc

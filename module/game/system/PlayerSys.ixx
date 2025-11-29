@@ -10,4 +10,6 @@ void createPlayer(entt::registry& reg);
 void updateMovement(entt::registry& reg, const Window& window);
 glm::mat4 getPlayerView(entt::registry& reg);
 void update(entt::registry& reg);
+void placeBlock(entt::registry& reg);
+void destroyBlock(entt::registry& reg);
 }

@@ -25,4 +25,6 @@ glm::vec3 calculateForward(float pitch, float yaw)
         std::sin(pitch),
         -std::cos(pitch) * std::cos(yaw)};
 }
+
+
 } // namespace mc::Maths

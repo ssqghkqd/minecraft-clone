@@ -27,9 +27,11 @@ void RenderSystem::init(entt::registry& registry, const int screenWidth, const i
 
     auto& shaderManager = registry.ctx().get<ShaderManager>();
     m_shader = &shaderManager.getShader("default");
+    m_uiShader = &shaderManager.getShader("ui");
 
     auto& meshManager = registry.ctx().get<MeshManager>();
     m_cubeMesh = &meshManager.getCubeMesh();
+    m_quadMesh = &meshManager.getQuadMesh();
 
     // 设置OpenGL状态
     gl::enable(gl::depth_test);
@@ -48,15 +50,18 @@ void RenderSystem::setProjection(int width, int height)
 {
     const float aspectRatio = static_cast<float>(width) / static_cast<float>(height);
     m_projection = glm::perspective(
-        glm::radians(90.0f), // 视野角度 45度
+        glm::radians(90.0f), // 视野角度
         aspectRatio,         // 宽高比
         0.1f,                // 近平面
         100.0f               // 远平面
     );
 
+    m_orthoProjection = glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1.0f, 1.0f);
+
     // 更新着色器
     m_shader->use();
     m_shader->set("projection", m_projection);
+    m_uiShader->set("projection", m_orthoProjection);
 }
 
 void RenderSystem::renderEntity(entt::registry& registry,
@@ -97,4 +102,5 @@ void RenderSystem::update(entt::registry& registry, const glm::mat4& viewMat) co
                   renderEntity(registry, tf, rc, viewMat);
               });
 }
+
 } // namespace mc

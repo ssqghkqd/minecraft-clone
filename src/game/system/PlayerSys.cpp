@@ -10,6 +10,8 @@ import core.Window;
 import glfw;
 import core.InputSystem;
 import utils.maths;
+import game.RaySys;
+import game.World;
 
 namespace mc::PlayerSys
 {
@@ -70,8 +72,6 @@ void updateMovement(entt::registry& reg, const Window& window)
     }
 }
 
-
-
 void update(entt::registry& reg)
 {
     auto& ec = reg.get<EntityComp>(m_player);
@@ -88,6 +88,37 @@ glm::mat4 getPlayerView(entt::registry& reg)
     const auto& pc = reg.get<PlayerComp>(m_player);
     const auto& tf = reg.get<TransformComp>(m_player);
     return glm::lookAt(tf.position, tf.position + pc.forward, glm::vec3(0.0f, 1.0f, 0.0f));
+}
+
+void placeBlock(entt::registry& reg)
+{
+    const auto& tf = reg.get<TransformComp>(m_player);
+    const auto& pc = reg.get<PlayerComp>(m_player);
+
+    auto& world = reg.ctx().get<World>();
+    RaySys::Ray ray;
+    ray.start = tf.position;
+    ray.direction = pc.forward;
+    const auto hitResult = RaySys::checkRayHit(ray, world);
+    if (hitResult.has_value())
+    {
+        world.createBlock(reg, hitResult->hitPos + hitResult->normal, BlockType::planks);
+    }
+}
+void destroyBlock(entt::registry& reg)
+{
+    const auto& tf = reg.get<TransformComp>(m_player);
+    const auto& pc = reg.get<PlayerComp>(m_player);
+
+    auto& world = reg.ctx().get<World>();
+    RaySys::Ray ray;
+    ray.start = tf.position;
+    ray.direction = pc.forward;
+    const auto hitResult = RaySys::checkRayHit(ray, world);
+    if (hitResult.has_value())
+    {
+        world.destroyBlock(reg, hitResult->hitPos);
+    }
 }
 
 } // namespace mc::PlayerSys

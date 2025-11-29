@@ -67,6 +67,7 @@ void Window::init(int width, int height, const char* title)
     glfw::swapInterval(1); // 启用垂直同步（锁定显示器刷新率）
     glfw::setInputMode(m_window, glfw::cursor, glfw::cursor_disabled);
     glfw::setCursorPosCallback(m_window, InputSystem::mouseCallback);
+    glfw::setMouseButtonCallback(m_window, InputSystem::mouseButtonCallback);
 
     spdlog::info("window初始化成功");
     m_inited = true;
