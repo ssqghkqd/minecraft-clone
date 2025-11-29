@@ -11,4 +11,5 @@ constexpr int window_height = 960;
 constexpr const char* window_title = "Minecraft";
 constexpr float window_scale = 0.9f;
 constexpr float stat_interval = 1.0f;
+constexpr int block_count = 10;
 } // namespace th

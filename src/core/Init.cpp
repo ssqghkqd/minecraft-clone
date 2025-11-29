@@ -1,8 +1,6 @@
 module;
-#include <entt/entt.hpp>
-
 module core.Init;
-
+import entt;
 import spdlog;
 import utils.Time;
 import utils.JsonManager;
@@ -16,7 +14,7 @@ import graphics.ShaderManager;
 import graphics.RenderSystem;
 import game.comp;
 import game.system.PlayerSys;
-import game.system.BlockSys;
+import game.World;
 
 namespace mc::Init
 {
@@ -30,11 +28,14 @@ void init(entt::registry& reg)
 void loadResources(entt::registry& reg)
 {
     auto& texture = reg.ctx().get<TextureManager>();
+    auto& audio = reg.ctx().get<AudioManager>();
+    auto& world = reg.ctx().get<World>();
     texture.loadTexture("grass_block", "textures/grass_block.png");
     texture.loadTexture("cobblestone", "textures/cobblestone.png");
 
-    BlockSys::registerBlockTex("grass_block", BlockType::grass_block);
-    BlockSys::registerBlockTex("cobblestone", BlockType::cobblestone);
+    world.registerBlockTex(BlockType::grass_block, "grass_block");
+    world.registerBlockTex(BlockType::cobblestone, "cobblestone");
+    audio.loadMusic("creeper?", "musics/revenge.mp3");
 }
 
 void loadCore(entt::registry& reg)
@@ -62,44 +63,51 @@ void loadCore(entt::registry& reg)
     reg.ctx().emplace<AudioManager>();
 
     reg.ctx().emplace<ConfigManager>();
+
+    reg.ctx().emplace<World>();
 }
 
 void gameStatusSet(entt::registry& reg)
 {
     PlayerSys::createPlayer(reg);
+    auto& audio = reg.ctx().get<AudioManager>();
+    auto& world = reg.ctx().get<World>();
+    audio.playMusic("creeper?");
+
     for (int x = 0; x < 16; x++)
     {
         for (int z = 0; z < 16; z++)
         {
-            BlockSys::createBlock(reg, {x, 0, z}, BlockType::grass_block);
+            world.createBlock(reg, {x, 0, z}, BlockType::grass_block);
+            world.createBlock(reg, {x, -16, z}, BlockType::cobblestone);
         }
     }
     for (int y = -16; y < 0; y++)
     {
         for (int z = 0; z < 16; z++)
         {
-            BlockSys::createBlock(reg, {0, y, z}, BlockType::cobblestone);
+            world.createBlock(reg, {0, y, z}, BlockType::cobblestone);
         }
     }
     for (int y = -16; y < 0; y++)
     {
         for (int x = 0; x < 16; x++)
         {
-            BlockSys::createBlock(reg, {x, y, 0}, BlockType::cobblestone);
+            world.createBlock(reg, {x, y, 0}, BlockType::cobblestone);
         }
     }
     for (int y = -16; y < 0; y++)
     {
         for (int z = 0; z < 16; z++)
         {
-            BlockSys::createBlock(reg, {16, y, z}, BlockType::cobblestone);
+            world.createBlock(reg, {15, y, z}, BlockType::cobblestone);
         }
     }
     for (int y = -16; y < 0; y++)
     {
         for (int x = 0; x < 16; x++)
         {
-            BlockSys::createBlock(reg, {x, y, 16}, BlockType::cobblestone);
+            world.createBlock(reg, {x, y, 15}, BlockType::cobblestone);
         }
     }
 }

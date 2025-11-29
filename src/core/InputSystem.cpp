@@ -81,14 +81,14 @@ bool InputSystem::isKeyReleased(int key) const
 void InputSystem::mouseCallback([[maybe_unused]] glfw::window* window, double xPos, double yPos)
 {
     // 必须有这个第一个参数 glfw要求 但不加maybe编译器报错
-    double offsetX = lastX - xPos;
-    double offsetY = lastY - yPos; // Y轴反转
+    double offsetX = xPos - lastX;
+    double offsetY = yPos - lastY;
     lastX = xPos;
     lastY = yPos;
     offsetX *= sensitivity;
     offsetY *= sensitivity;
-    pitch += offsetY;
-    yaw += offsetX;
+    pitch -= offsetY; // Y轴反转
+    yaw -= offsetX;
     if (pitch > radius_89)
     {
         pitch = radius_89;
@@ -97,6 +97,7 @@ void InputSystem::mouseCallback([[maybe_unused]] glfw::window* window, double xP
     {
         pitch = -radius_89;
     }
+    // 限制在[0,2pi)
     yaw = Maths::normalizeAngle(yaw);
 }
 

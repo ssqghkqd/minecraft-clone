@@ -15,9 +15,10 @@ set(GAMES
         game/comp/block/BlockComp.ixx
         game/comp/PlayerComp.ixx
 
-        game/system/BlockSys.ixx
         game/system/PlayerSys.ixx
         game/system/EntityMoveSys.ixx
+
+        game/World.ixx
 )
 
 set(GRAPHICS
@@ -39,6 +40,7 @@ set(UTILS
         utils/FileManager.ixx
         utils/JsonManager.ixx
         utils/Math.ixx
+        utils/glm_hash.ixx
 )
 
 set(THIRD_PARTY
@@ -48,6 +50,7 @@ set(THIRD_PARTY
         thirdparty/opengl.ixx
         thirdparty/spdlog.ixx
         thirdparty/nlohmann_json.ixx
+        thirdparty/entt.ixx
 )
 
 

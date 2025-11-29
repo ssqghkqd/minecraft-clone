@@ -11,8 +11,9 @@ set(CORE_SOURCES
 
 set(GAME_SOURCES
         game/system/PlayerSys.cpp
-        game/system/BlockSys.cpp
         game/system/EntityMoveSys.cpp
+
+        game/World.cpp
 )
 
 set(GRAPHICS_SOURCES

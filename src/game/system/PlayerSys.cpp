@@ -76,7 +76,7 @@ void update(entt::registry& reg)
 {
     auto& ec = reg.get<EntityComp>(m_player);
     auto& pc = reg.get<PlayerComp>(m_player);
-    const auto targetVel = 10.0f * pc.dir;
+    const auto targetVel = 20.0f * pc.dir;
     auto [pitch, yaw] = InputSystem::getPitchYaw();
 
     ec.vel = glm::mix(ec.vel, targetVel, 0.7f);
