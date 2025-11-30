@@ -119,7 +119,7 @@ class TextureManager
         assert(id != 0 && "id无效");
         if (id != m_lastTexture)
         {
-            // 别检查 不存在确实是段错误没问题，但是那是外部问题
+            // 别检查 id不存在确实导致段错误，但不应该检查，应该在编程时发现bug，否则性能真的太差了
             gl::bindTexture(gl::texture_2d, id);
             m_lastTexture = id;
         }

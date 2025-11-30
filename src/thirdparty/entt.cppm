@@ -8,5 +8,6 @@ export module entt;
 
 export namespace entt
 {
-using registry = registry;
+using entt::registry;
+using entt::dispatcher;
 }

@@ -11,6 +11,7 @@ import utils;
 import Config;
 
 import :Window;
+import :InputSystem;
 
 namespace mc::Init
 {
@@ -24,6 +25,8 @@ void initManager(entt::registry& reg)
 {
     auto& window = reg.ctx().emplace<Window>();
     window.createWindow(window_width * window_scale, window_height * window_scale, window_title);
+
+    reg.ctx().emplace<InputSystem>();
 }
 
 export void init(entt::registry& reg)

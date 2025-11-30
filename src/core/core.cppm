@@ -8,3 +8,5 @@ export module core;
 export import :App;
 export import :Window;
 export import :Init;
+export import :InputSystem;
+export import :Events;

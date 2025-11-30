@@ -11,6 +11,7 @@ import utils;
 import Config;
 
 import :Init;
+import :InputSystem;
 
 export namespace mc
 {
@@ -36,11 +37,15 @@ class App
     void mainloop()
     {
         auto& window = m_registry.ctx().get<Window>();
+        auto& inputsys = m_registry.ctx().get<InputSystem>();
 
         while (!window.shouldClose())
         {
             Time::update();
             window.pollEvents();
+
+            inputsys.update(m_registry);
+
             window.swapBuffers();
         }
     }

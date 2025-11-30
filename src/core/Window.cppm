@@ -6,13 +6,47 @@ export module core:Window;
 import glfw;
 import spdlog;
 
-export namespace mc
+namespace mc
 {
-class Window
+
+export enum class Key
+{
+    w,
+    a,
+    s,
+    d,
+    space,
+    left_control,
+    left_alt,
+    left_shift
+};
+
+export class Window
 {
   private:
     glfw::window* m_window = nullptr;
     bool m_isDisplayCursor = false;
+
+    static int toGLFWKeyCode(Key key)
+    {
+        switch (key)
+        {
+            case Key::w:
+                return glfw::key_w;
+            case Key::a:
+                return glfw::key_a;
+            case Key::s:
+                return glfw::key_s;
+            case Key::left_shift:
+                return glfw::key_left_shift;
+            case Key::left_control:
+                return glfw::key_left_control;
+            case Key::left_alt:
+                return glfw::key_left_alt;
+            default:
+                return 0;
+        }
+    }
 
   public:
     Window() = default;
@@ -85,6 +119,11 @@ class Window
             m_isDisplayCursor = true;
         }
         spdlog::info("鼠标模式: {}", m_isDisplayCursor ? "显示" : "隐藏");
+    }
+
+    [[nodiscard]] bool isKeyPressed(Key key) const
+    {
+        return glfw::getKey(m_window, toGLFWKeyCode(key)) == glfw::press;
     }
 
     Window(const Window&) = delete;
