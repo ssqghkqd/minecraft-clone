@@ -23,6 +23,13 @@ set(THIRD_PARTY
         thirdparty/stb_image.cppm
 )
 
+set(CORES
+        core/App.cppm
+        core/Window.cppm
+        core/Init.cppm
+        core/core.cppm
+)
+
 set(UTILS
         utils/utils.cppm
         utils/Config.cppm
@@ -35,6 +42,7 @@ set(UTILS
 set(RESOURCES
     resources/AudioManager.cppm
         resources/TextureManager.cppm
+        resources/resources.cppm
 )
 
 

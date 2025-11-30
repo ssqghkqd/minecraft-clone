@@ -56,7 +56,7 @@ class AudioManager
     {
         if (!FileUtils::isExist(path))
         {
-            spdlog::critical("音乐加载失败，{}不存在", path);
+            spdlog::critical("音乐加载失败，{}不存在", path.string());
             throw std::runtime_error("音乐加载失败");
         }
         m_musicPaths[name] = path;

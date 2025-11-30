@@ -1,7 +1,8 @@
-#include <print>
+import core;
 
 int main()
 {
-    std::println("Hello World!");
+    mc::App app;
+    app.run();
     return 0;
 }
