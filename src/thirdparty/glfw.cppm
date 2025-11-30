@@ -1,10 +1,9 @@
-//
-// Created by ss on 2025/11/22.
-//
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2025 ss
+// glfw包装
 module;
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
-
 export module glfw;
 
 export namespace glfw
@@ -59,4 +58,4 @@ constexpr auto cursor_normal = GLFW_CURSOR_NORMAL;
 constexpr auto key_left_alt = GLFW_KEY_LEFT_ALT;
 constexpr auto mouse_button_left = GLFW_MOUSE_BUTTON_LEFT;
 constexpr auto mouse_button_right = GLFW_MOUSE_BUTTON_RIGHT;
-} // namespace glfw
+}

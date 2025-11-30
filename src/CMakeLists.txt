@@ -2,31 +2,19 @@
 
 # 按模块分组源文件
 set(CORE_SOURCES
-        core/App.cpp
-        core/Init.cpp
-        core/InputSystem.cpp
-        core/Window.cpp
-        core/ConfigManager.cpp
+
 )
 
 set(GAME_SOURCES
-        game/system/PlayerSys.cpp
-        game/system/EntityMoveSys.cpp
 
-        game/world/World.cpp
-        game/world/RaySys.cpp
 )
 
 set(GRAPHICS_SOURCES
-        graphics/MeshManager.cpp
-        graphics/Shader.cpp
-        graphics/ShaderManager.cpp
-        resources/TextureManager.cpp
+
 )
 
 set(UTILS_SOURCES
         utils/FileManager.cpp
-        utils/JsonManager.cpp
         utils/Random.cpp
         utils/Time.cpp
         utils/Math.cpp

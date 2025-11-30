@@ -1,9 +1,8 @@
-//
-// Created by ss on 2025/11/22.
-//
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2025 ss
+// gl函数包装
 module;
 #include <glad/glad.h>
-
 export module opengl;
 
 export namespace gl

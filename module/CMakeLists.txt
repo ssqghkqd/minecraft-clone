@@ -37,19 +37,13 @@ set(UTILS
         utils/Time.ixx
         utils/Config.ixx
         utils/FileManager.ixx
-        utils/JsonManager.ixx
         utils/Math.ixx
         utils/glm_hash.ixx
 )
 
 set(THIRD_PARTY
-        thirdparty/glfw.ixx
         thirdparty/stb_image.ixx
         thirdparty/miniaudio.ixx
-        thirdparty/opengl.ixx
-        thirdparty/spdlog.ixx
-        thirdparty/nlohmann_json.ixx
-        thirdparty/entt.ixx
 )
 
 
