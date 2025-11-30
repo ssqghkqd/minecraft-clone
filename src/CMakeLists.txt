@@ -28,6 +28,9 @@ set(CORES
         core/Window.cppm
         core/Init.cppm
         core/core.cppm
+        core/AppLogicSys.cppm
+        core/Events.cppm
+        core/InputSystem.cppm
 )
 
 set(UTILS

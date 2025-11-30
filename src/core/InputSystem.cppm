@@ -30,6 +30,7 @@ public:
         currentState.keyActions.left_control = window.isKeyPressed(Key::left_control);
         currentState.keyActions.left_shift = window.isKeyPressed(Key::left_shift);
         currentState.keyActions.space = window.isKeyPressed(Key::space);
+        currentState.keyActions.esc = window.isKeyPressed(Key::ecs);
         reg.ctx().get<entt::dispatcher>().trigger(currentState);
     }
 

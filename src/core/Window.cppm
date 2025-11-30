@@ -18,7 +18,8 @@ export enum class Key
     space,
     left_control,
     left_alt,
-    left_shift
+    left_shift,
+    ecs
 };
 
 export class Window
@@ -37,12 +38,18 @@ export class Window
                 return glfw::key_a;
             case Key::s:
                 return glfw::key_s;
+            case Key::d:
+                return glfw::key_d;
             case Key::left_shift:
                 return glfw::key_left_shift;
             case Key::left_control:
                 return glfw::key_left_control;
             case Key::left_alt:
                 return glfw::key_left_alt;
+            case Key::space:
+                return glfw::key_space;
+            case Key::ecs:
+                return glfw::key_escape;
             default:
                 return 0;
         }
@@ -104,6 +111,11 @@ export class Window
     void pollEvents() const
     {
         glfw::pollEvents();
+    }
+
+    void closeWindow() const
+    {
+        glfw::setWindowShouldClose(m_window, true);
     }
 
     void toggleCursor()

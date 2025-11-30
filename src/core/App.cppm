@@ -12,10 +12,24 @@ import Config;
 
 import :Init;
 import :InputSystem;
+import :Events;
 
-export namespace mc
+namespace mc
 {
-class App
+struct AppHandler
+{
+    Window& window;
+    void handleAppShutDownRequestEvent([[maybe_unused]] const events::AppShutDownRequestEvent& event) const
+    {
+        window.closeWindow();
+    }
+    void handleWindowToggleCursorEvent([[maybe_unused]] const events::WindowToggleCursorEvent& event) const
+    {
+        window.toggleCursor();
+    };
+};
+
+export class App
 {
   private:
     entt::registry m_registry{};
@@ -24,6 +38,7 @@ class App
     App()
     {
         Init::init(m_registry);
+        registerEvent();
     }
     ~App() = default; // 自动清理资源
 
@@ -48,6 +63,17 @@ class App
 
             window.swapBuffers();
         }
+    }
+
+    void registerEvent()
+    {
+        auto& dp = m_registry.ctx().get<entt::dispatcher>();
+        auto& window = m_registry.ctx().get<Window>();
+        static AppHandler appHandler{window};
+        dp.sink<events::AppShutDownRequestEvent>()
+            .connect<&AppHandler::handleAppShutDownRequestEvent>(appHandler);
+        dp.sink<events::WindowToggleCursorEvent>()
+            .connect<&AppHandler::handleWindowToggleCursorEvent>(appHandler);
     }
 };
 } // namespace mc
