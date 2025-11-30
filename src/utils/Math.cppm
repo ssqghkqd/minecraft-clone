@@ -1,11 +1,12 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2025 ss
+// 数学操作
 module;
 #include <cmath>
+export module utils:Math;
+import glm;
 
-#include "glm/ext/quaternion_geometric.hpp"
-#include "glm/vec3.hpp"
-module utils.maths;
-
-namespace mc::Maths
+export namespace mc::Maths
 {
 float normalizeAngle(float angle)
 {
@@ -25,6 +26,4 @@ glm::vec3 calculateForward(float pitch, float yaw)
         std::sin(pitch),
         -std::cos(pitch) * std::cos(yaw)};
 }
-
-
 } // namespace mc::Maths

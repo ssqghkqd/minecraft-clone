@@ -1,7 +1,8 @@
-//
-// Created by ss on 2025/11/22.
-//
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2025 ss
+// 配置数据
 module;
+
 export module Config;
 
 export namespace mc
@@ -17,4 +18,4 @@ constexpr float max_distance = 10.0f; // 玩家手长度
 constexpr float step_distance = 0.01f;
 constexpr float max_steps = max_distance / step_distance;
 
-} // namespace th
+}

@@ -1,49 +1,53 @@
 # src/CMakeLists.txt
 
-# 按模块分组源文件
-set(CORE_SOURCES
-
-)
-
-set(GAME_SOURCES
-
-)
-
-set(GRAPHICS_SOURCES
-
-)
-
-set(UTILS_SOURCES
-        utils/FileManager.cpp
-        utils/Random.cpp
-        utils/Time.cpp
-        utils/Math.cpp
-)
-
-set(RESOURCES_SOURCES
-        resources/AudioManager.cpp
-)
-
-set(THIRDPARTY_SOURCES
-        thirdparty/stb_image.cpp
+set(THIRD_PARTY_SOURCES
         thirdparty/miniaudio.cpp
+        thirdparty/stb_image.cpp
 )
 
 # 合并所有源文件
 set(SOURCES
         main.cpp
-        ${CORE_SOURCES}
-        ${GAME_SOURCES}
-        ${GRAPHICS_SOURCES}
-        ${UTILS_SOURCES}
-        ${RESOURCES_SOURCES}
-        ${THIRDPARTY_SOURCES}
+        ${THIRD_PARTY_SOURCES}
+)
+# ----------------------------------------------
+
+# 模块接口文件
+set(THIRD_PARTY
+        thirdparty/entt.cppm
+        thirdparty/glfw.cppm
+        thirdparty/miniaudio.cppm
+        thirdparty/nlohmann_json.cppm
+        thirdparty/opengl.cppm
+        thirdparty/spdlog.cppm
+        thirdparty/stb_image.cppm
+)
+
+set(UTILS
+        utils/utils.cppm
+        utils/Config.cppm
+        utils/FileUtils.cppm
+        utils/Math.cppm
+        utils/Time.cppm
+        utils/Random.cppm
+)
+
+set(RESOURCES
+    resources/AudioManager.cppm
+        resources/TextureManager.cppm
 )
 
 
 target_sources(${PROJECT_NAME}
         PRIVATE
         ${SOURCES}
+)
+
+target_sources(${PROJECT_NAME}
+        PUBLIC
+        FILE_SET cxx_modules TYPE CXX_MODULES
+        BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/third_party/glm
+        FILES ${CORES} ${UTILS} ${GAMES} ${GRAPHICS} ${RESOURCES} ${THIRD_PARTY} ../third_party/glm/glm.cppm
 )
 
 # 包含目录 - 确保头文件能被找到

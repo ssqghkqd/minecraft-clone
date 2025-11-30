@@ -41,5 +41,4 @@ add_subdirectory(third_party/glad)
 add_executable(${PROJECT_NAME})
 
 # 主项目
-add_subdirectory(module)
 add_subdirectory(src)

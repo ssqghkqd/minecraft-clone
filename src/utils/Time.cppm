@@ -1,17 +1,24 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2025 ss
+// 时间工具
 module;
 #include <chrono>
-module utils.Time;
+export module utils:Time;
 
 namespace mc::Time
 {
 using Clock = std::chrono::steady_clock;
 using Seconds = std::chrono::duration<double>;
 
-static Clock::time_point appStartTime; // 程序启动的绝对时间
+static Clock::time_point appStartTime;  // 程序启动的绝对时间
 static Clock::time_point gameStartTime; // 游戏开始的时间
 static Clock::time_point lastFrameTime;
 static double dt = 0.0;
 static double t = 0.0;
+}
+
+export namespace mc::Time
+{
 
 void init()
 {
@@ -22,7 +29,6 @@ void gameStart()
     gameStartTime = Clock::now();
     lastFrameTime = gameStartTime;
 }
-
 
 double getDeltaTime()
 {
@@ -42,4 +48,4 @@ void update()
     lastFrameTime = now;
 }
 
-} // namespace th::Time
+} // namespace mc::Time
