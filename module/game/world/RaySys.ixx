@@ -2,7 +2,7 @@ module;
 #include <optional>
 
 #include "glm/vec3.hpp"
-export module game.RaySys;
+export module game.world:RaySys;
 import game.World;
 
 export namespace mc::RaySys

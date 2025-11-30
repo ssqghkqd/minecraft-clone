@@ -34,8 +34,8 @@ public:
     TextureManager();
 
 private:
-    std::unordered_map<std::string, gl::uint> textures; // 纹理缓存
-    gl::uint lastTexture = 0;
+    std::unordered_map<std::string, gl::uint> m_textures; // 纹理缓存
+    gl::uint m_lastTexture = 0;
     bool m_inited = false;
 };
 }

@@ -1,6 +1,7 @@
 module;
-#include <string>
+#include <cassert>
 #include <filesystem>
+#include <string>
 module resources.TextureManager;
 import utils.FileManager;
 import stb_image;
@@ -21,9 +22,9 @@ TextureManager::TextureManager()
 // path是完整路径（assets下的)
 gl::uint TextureManager::loadTexture(const std::string& textureName, const fs::path& path)
 {
-    if (textures.contains(textureName))
+    if (m_textures.contains(textureName))
     {
-        return textures[textureName];
+        return m_textures[textureName];
     }
 
     const std::filesystem::path fullPath = FileManager::getResourcePath(path, true);
@@ -71,7 +72,7 @@ gl::uint TextureManager::loadTexture(const std::string& textureName, const fs::p
 
     stbi::image_free(data);
 
-    textures[textureName] = textureID;
+    m_textures[textureName] = textureID;
 
     spdlog::info("加载纹理{}， 宽{} 高{} 通道数{}", fullPath.string(), width, height, nrChannels);
 
@@ -81,8 +82,8 @@ gl::uint TextureManager::loadTexture(const std::string& textureName, const fs::p
 gl::uint TextureManager::getTexture(const std::string& name) const
 {
     // 查询map
-    auto it = textures.find(name);
-    if (it != textures.end())
+    auto it = m_textures.find(name);
+    if (it != m_textures.end())
     {
         return it->second; // ->second代表返回键值 first 返回键名
     }
@@ -91,22 +92,24 @@ gl::uint TextureManager::getTexture(const std::string& name) const
 
 void TextureManager::bind(gl::uint id)
 {
-    if (id != lastTexture)
+    assert(id != 0 && "id无效");
+    if (id != m_lastTexture)
     {
         // 别检查 不存在确实是段错误没问题，但是那是外部问题
         gl::bindTexture(gl::texture_2d, id);
-        lastTexture = id;
+        m_lastTexture = id;
     }
 }
 
 
 void TextureManager::clear()
 {
-    for (auto& [name, texture] : textures)
+
+    for (auto& [name, texture] : m_textures)
     {
         gl::deleteTextures(1, &texture);
     }
-    textures.clear();
+    m_textures.clear();
 }
 
 void TextureManager::init()

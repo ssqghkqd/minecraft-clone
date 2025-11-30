@@ -3,9 +3,9 @@ module;
 #include <optional>
 
 #include "glm/common.hpp"
-module game.RaySys;
+module game.world;
 import Config;
-import game.World;
+import game.world;
 
 namespace mc::RaySys
 {

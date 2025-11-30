@@ -5,7 +5,7 @@ module;
 #include <unordered_map>
 
 #include "entt/entity/entity.hpp"
-export module game.World;
+export module game.world:World;
 import game.comp;
 import utils.glm_hash;
 
