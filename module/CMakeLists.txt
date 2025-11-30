@@ -7,7 +7,6 @@ set(CORES
 )
 
 set(GAMES
-        game/comp/RenderComp.ixx
         game/comp/TagComp.ixx
         game/comp/Comp.ixx
         game/comp/TransformComp.ixx
@@ -24,10 +23,9 @@ set(GAMES
 
 set(GRAPHICS
         graphics/MeshManager.ixx
-        graphics/RenderSystem.ixx
         graphics/ShaderManager.ixx
         graphics/Shader.ixx
-        graphics/TextureManager.ixx
+        resources/TextureManager.ixx
 )
 
 set(RESOURCES

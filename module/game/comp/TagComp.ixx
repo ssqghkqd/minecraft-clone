@@ -6,6 +6,5 @@ export module game.comp:tag;
 
 export namespace mc
 {
-struct BlockTag{};
 struct PlayerTag{};
 } // namespace th

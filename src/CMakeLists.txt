@@ -19,10 +19,9 @@ set(GAME_SOURCES
 
 set(GRAPHICS_SOURCES
         graphics/MeshManager.cpp
-        graphics/RenderSystem.cpp
         graphics/Shader.cpp
         graphics/ShaderManager.cpp
-        graphics/TextureManager.cpp
+        resources/TextureManager.cpp
 )
 
 set(UTILS_SOURCES

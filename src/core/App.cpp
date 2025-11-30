@@ -28,7 +28,6 @@ void App::mainLoop()
 {
     auto& window = m_registry.ctx().get<Window>();
     auto& inputSystem = m_registry.ctx().get<InputSystem>();
-    auto& renderSystem = m_registry.ctx().get<RenderSystem>();
     auto& audio = m_registry.ctx().get<AudioManager>();
 
     Time::gameStart();

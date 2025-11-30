@@ -1,7 +1,7 @@
 module;
 #include <string>
 #include <filesystem>
-module graphics.TextureManager;
+module resources.TextureManager;
 import utils.FileManager;
 import stb_image;
 import spdlog;
@@ -89,14 +89,16 @@ gl::uint TextureManager::getTexture(const std::string& name) const
     return 0; // 无效纹理
 }
 
-void TextureManager::bind(const std::string& name) const
+void TextureManager::bind(gl::uint id)
 {
-    auto it = textures.find(name);
-    if (it != textures.end())
+    if (id != lastTexture)
     {
-        gl::bindTexture(gl::texture_2d, it->second);
+        // 别检查 不存在确实是段错误没问题，但是那是外部问题
+        gl::bindTexture(gl::texture_2d, id);
+        lastTexture = id;
     }
 }
+
 
 void TextureManager::clear()
 {
@@ -110,11 +112,11 @@ void TextureManager::clear()
 void TextureManager::init()
 {
     // stbi_set_flip_vertically_on_load(true);
-    if (inited)
+    if (m_inited)
     {
         spdlog::info("texture manager already inited");
         return;
     }
-    inited = true;
+    m_inited = true;
 }
 } // namespace th

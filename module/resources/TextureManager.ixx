@@ -6,7 +6,7 @@ module;
 #include <string>
 #include <filesystem>
 
-export module graphics.TextureManager;
+export module resources.TextureManager;
 import opengl;
 
 namespace fs = std::filesystem;
@@ -19,7 +19,7 @@ public:
     ~TextureManager();
     gl::uint loadTexture(const std::string& textureName, const fs::path& path);
     gl::uint getTexture(const std::string &name) const;
-    void bind(const std::string &name) const;
+    void bind(gl::uint id);
     void clear();
     void init();
 
@@ -35,6 +35,7 @@ public:
 
 private:
     std::unordered_map<std::string, gl::uint> textures; // 纹理缓存
-    bool inited = false;
+    gl::uint lastTexture = 0;
+    bool m_inited = false;
 };
 }
