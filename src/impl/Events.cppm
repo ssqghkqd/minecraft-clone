@@ -3,9 +3,9 @@
 // 事件s
 module;
 
-export module core:Events;
+export module impl:Events;
 
-namespace mc::events
+namespace mc::impl::events
 {
 export struct InputState
 {

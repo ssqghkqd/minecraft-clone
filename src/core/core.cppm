@@ -9,5 +9,4 @@ export import :App;
 export import :Window;
 export import :InputSystem;
 export import :Init;
-export import :Events;
 export import :AppLogicSys;

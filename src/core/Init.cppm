@@ -2,17 +2,19 @@
 // Copyright (C) 2025 ss
 // 初始化 纯过程函数
 module;
-
+#include <optional>
 export module core:Init;
 import entt;
 import spdlog;
 
 import utils;
-import Config;
+import impl;
 
 import :InputSystem;
 import :Window;
 import :AppLogicSys;
+
+import graphics;
 
 namespace mc::Init
 {
@@ -20,24 +22,47 @@ void initBasic()
 {
     Time::init();
     spdlog::set_pattern("[%H:%M:%S][%l] %v");
+    spdlog::set_level(spdlog::level_enum::debug);
 }
 
 void initManager(entt::registry& reg)
 {
     auto& dp = reg.ctx().emplace<entt::dispatcher>();
     auto& window = reg.ctx().emplace<Window>();
-    window.createWindow(window_width * window_scale, window_height * window_scale, window_title);
+    window.createWindow(impl::config::window_width * impl::config::window_scale, impl::config::window_height * impl::config::window_scale, impl::config::window_title);
 
     reg.ctx().emplace<InputSystem>();
 
+    reg.ctx().emplace<ShaderManager>();
+
+
     AppLogic::init(dp);
+
 }
 
-export void init(entt::registry& reg)
+std::optional<impl::error::ErrorType>
+loadResource(entt::registry& reg)
+{
+    auto& shaderM = reg.ctx().get<ShaderManager>();
+    auto shaderPoss = shaderM.load("default", "shaders/default.vs", "shaders/default.fs");
+    if (!shaderPoss.has_value())
+    {
+        return shaderPoss.error();
+    }
+
+    return std::nullopt;
+}
+
+export std::optional<impl::error::ErrorType>
+init(entt::registry& reg)
 {
     initBasic();
     initManager(reg);
+    const auto initMPoss = loadResource(reg);
+    if (initMPoss.has_value())
+    {
+        return initMPoss;
+    }
+    return std::nullopt;
 }
-}
-
-
+} // namespace mc::Init

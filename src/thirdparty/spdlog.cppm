@@ -13,4 +13,7 @@ using spdlog::error;
 using spdlog::info;
 using spdlog::warn;
 using spdlog::set_pattern;
+using spdlog::set_level;
+
+using level::level_enum;
 }

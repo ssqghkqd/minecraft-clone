@@ -5,6 +5,7 @@ module;
 export module core:Window;
 import glfw;
 import spdlog;
+import opengl;
 
 namespace mc
 {
@@ -89,9 +90,10 @@ export class Window
             spdlog::critical("窗口创建失败");
             throw;
         }
-        spdlog::info("窗口创建成功");
+        spdlog::debug("窗口创建成功");
         glfw::makeContextCurrent(m_window);
-        spdlog::info("创建opengl上下文");
+        spdlog::debug("创建opengl上下文");
+        gl::loadGLLoader((gl::loadproc)glfw::getProcAddress);
 
         glfw::swapInterval(1); // Vsync
 

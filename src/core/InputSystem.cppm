@@ -6,7 +6,7 @@ module;
 export module core:InputSystem;
 import entt;
 import :Window;
-import :Events;
+import impl;
 
 namespace mc
 {
@@ -20,7 +20,7 @@ public:
     void update(entt::registry& reg)
     {
         const auto& window = reg.ctx().get<Window>();
-        events::InputState currentState{};
+        impl::events::InputState currentState{};
 
         currentState.keyActions.w = window.isKeyPressed(Key::w);
         currentState.keyActions.s = window.isKeyPressed(Key::s);

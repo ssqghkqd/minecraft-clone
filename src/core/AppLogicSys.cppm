@@ -5,7 +5,7 @@ module;
 
 export module core:AppLogicSys;
 import entt;
-import :Events;
+import impl;
 import spdlog;
 
 namespace mc::AppLogic
@@ -13,17 +13,17 @@ namespace mc::AppLogic
 struct Handler
 {
     entt::dispatcher& dp;
-    events::InputState m_prevState{};
-    void handleInput(const events::InputState& event)
+    impl::events::InputState m_prevState{};
+    void handleInput(const impl::events::InputState& event)
     {
         if (event.keyActions.esc)
         {
-            dp.trigger(events::AppShutDownRequestEvent{});
+            dp.trigger(impl::events::AppShutDownRequestEvent{});
         }
         // 按键防抖
         if (event.keyActions.left_alt && !m_prevState.keyActions.left_alt)
         {
-            dp.trigger(events::WindowToggleCursorEvent{});
+            dp.trigger(impl::events::WindowToggleCursorEvent{});
         }
         m_prevState = event;
     }
@@ -32,6 +32,6 @@ struct Handler
 export void init(entt::dispatcher& dp)
 {
     static Handler handler{dp};
-    dp.sink<events::InputState>().connect<&Handler::handleInput>(handler);
+    dp.sink<impl::events::InputState>().connect<&Handler::handleInput>(handler);
 }
 } // namespace mc::AppLogic

@@ -3,9 +3,9 @@
 // 配置数据
 module;
 
-export module Config;
+export module impl:Config;
 
-export namespace mc
+export namespace mc::impl::config
 {
 constexpr int window_width = 1920;
 constexpr int window_height = 1080;

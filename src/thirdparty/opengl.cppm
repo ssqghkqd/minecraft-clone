@@ -54,6 +54,8 @@ using loadproc = GLADloadproc;
 using glenum = GLenum;
 using uint = GLuint;
 using glint = GLint;
+using shader = GLuint;
+using buffer = GLuint;
 
 constexpr auto array_buffer = GL_ARRAY_BUFFER;
 constexpr auto element_array_buffer = GL_ELEMENT_ARRAY_BUFFER;

@@ -3,6 +3,6 @@ import core;
 int main()
 {
     mc::App app;
-    app.run();
-    return 0;
+    const int error = app.run();
+    return error;
 }

@@ -15,22 +15,18 @@ namespace fs = std::filesystem;
 
 export namespace mc::FileUtils
 {
-// 读取文件内容为字符串
-std::string readFileToString(const fs::path &path)
+// 读取文件内容为字符串 必须保证文件已存在（因为先使用获取完整路径函数）
+std::expected<std::string, std::string> readFileToString(const fs::path &path)
 {
 
     fs::path nativePath = path;
     nativePath.make_preferred();
 
-    if (!fs::exists(nativePath.string()))
-    {
-        spdlog::error("文件不存在:{}", path.string());
-    }
-
     std::ifstream file(nativePath);
     if (!file.is_open())
     {
         spdlog::error("无法打开文件:{}", nativePath.string());
+        return std::unexpected("无法打开文件");
     }
 
     std::stringstream buffer;
