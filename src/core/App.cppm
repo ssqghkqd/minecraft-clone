@@ -13,6 +13,8 @@ import impl;
 import :Init;
 import :InputSystem;
 
+import game.ecs;
+
 namespace mc
 {
 struct AppHandler
@@ -66,6 +68,7 @@ export class App
     {
         auto& window = m_registry.ctx().get<Window>();
         auto& inputsys = m_registry.ctx().get<InputSystem>();
+        auto& playerSys = m_registry.ctx().get<PlayerSys>();
 
         while (!window.shouldClose())
         {
@@ -73,6 +76,8 @@ export class App
             window.pollEvents();
 
             inputsys.update(m_registry);
+
+            playerSys.update(m_registry);
 
             window.swapBuffers();
         }

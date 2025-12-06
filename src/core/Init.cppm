@@ -15,6 +15,7 @@ import :Window;
 import :AppLogicSys;
 
 import graphics;
+import game.ecs;
 
 namespace mc::Init
 {
@@ -29,15 +30,20 @@ void initManager(entt::registry& reg)
 {
     auto& dp = reg.ctx().emplace<entt::dispatcher>();
     auto& window = reg.ctx().emplace<Window>();
-    window.createWindow(impl::config::window_width * impl::config::window_scale, impl::config::window_height * impl::config::window_scale, impl::config::window_title);
+    window.createWindow(impl::config::window_width * impl::config::window_scale,
+                        impl::config::window_height * impl::config::window_scale,
+                        impl::config::window_title);
 
     reg.ctx().emplace<InputSystem>();
 
     reg.ctx().emplace<ShaderManager>();
 
+    reg.ctx().emplace<RenderSystem>();
+    auto& ps = reg.ctx().emplace<PlayerSys>(reg);
 
+    ps.create(reg);
+    ps.registerMove(dp);
     AppLogic::init(dp);
-
 }
 
 std::optional<impl::error::ErrorType>
@@ -53,6 +59,17 @@ loadResource(entt::registry& reg)
     return std::nullopt;
 }
 
+void initOtherManager(entt::registry& reg)
+{
+    auto& rs = reg.ctx().get<RenderSystem>();
+    auto& shaderM = reg.ctx().get<ShaderManager>();
+
+    rs.init(impl::config::window_width * impl::config::window_scale,
+            impl::config::window_height * impl::config::window_scale,
+            {shaderM.get("default")},
+            0);
+}
+
 export std::optional<impl::error::ErrorType>
 init(entt::registry& reg)
 {
@@ -63,6 +80,7 @@ init(entt::registry& reg)
     {
         return initMPoss;
     }
+
     return std::nullopt;
 }
 } // namespace mc::Init

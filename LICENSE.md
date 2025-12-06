@@ -2,7 +2,7 @@
 
 ## 概述
 
-本仓库包含的游戏源代码（主要位于 `src/` 、`module/` 目录下）采用 **GNU General Public License v3.0 (GPLv3)** 许可证。
+本仓库包含的游戏源代码（主要位于 `src/` 目录下）采用 **GNU General Public License v3.0 (GPLv3)** 许可证。
 ## 详细声明
 
 ### 源代码许可证

@@ -44,6 +44,7 @@ set(GRAPHICS
         graphics/graphics.cppm
         graphics/Shader.cppm
         graphics/ShaderManager.cppm
+        graphics/RenderSystem.cppm
 )
 
 set(IMPLS
@@ -51,6 +52,7 @@ set(IMPLS
         impl/Error.cppm
         impl/Config.cppm
         impl/Events.cppm
+        impl/Key.cppm
 
 )
 
@@ -58,6 +60,14 @@ set(RESOURCES
         resources/AudioManager.cppm
         resources/TextureManager.cppm
         resources/resources.cppm
+)
+
+set(GAMES
+        game/ecs/EntityMoveSys.cppm
+        game/ecs/game.ecs.cppm
+        game/ecs/PlayerSys.cppm
+        game/ecs/comp/EntityComp.cppm
+        game/ecs/comp/Tag.cppm
 )
 
 

@@ -10,4 +10,8 @@ export namespace entt
 {
 using entt::registry;
 using entt::dispatcher;
+using entt::exclude;
+using entt::entity;
+using entt::null;
+using entt::view;
 }

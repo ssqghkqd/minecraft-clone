@@ -22,15 +22,15 @@ public:
         const auto& window = reg.ctx().get<Window>();
         impl::events::InputState currentState{};
 
-        currentState.keyActions.w = window.isKeyPressed(Key::w);
-        currentState.keyActions.s = window.isKeyPressed(Key::s);
-        currentState.keyActions.d = window.isKeyPressed(Key::d);
-        currentState.keyActions.a = window.isKeyPressed(Key::a);
-        currentState.keyActions.left_alt = window.isKeyPressed(Key::left_alt);
-        currentState.keyActions.left_control = window.isKeyPressed(Key::left_control);
-        currentState.keyActions.left_shift = window.isKeyPressed(Key::left_shift);
-        currentState.keyActions.space = window.isKeyPressed(Key::space);
-        currentState.keyActions.esc = window.isKeyPressed(Key::ecs);
+        currentState.keyActions.w = window.isKeyPressed(impl::Key::w);
+        currentState.keyActions.s = window.isKeyPressed(impl::Key::s);
+        currentState.keyActions.d = window.isKeyPressed(impl::Key::d);
+        currentState.keyActions.a = window.isKeyPressed(impl::Key::a);
+        currentState.keyActions.left_alt = window.isKeyPressed(impl::Key::left_alt);
+        currentState.keyActions.left_control = window.isKeyPressed(impl::Key::left_control);
+        currentState.keyActions.left_shift = window.isKeyPressed(impl::Key::left_shift);
+        currentState.keyActions.space = window.isKeyPressed(impl::Key::space);
+        currentState.keyActions.esc = window.isKeyPressed(impl::Key::ecs);
         reg.ctx().get<entt::dispatcher>().trigger(currentState);
     }
 

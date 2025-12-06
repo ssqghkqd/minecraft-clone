@@ -7,3 +7,4 @@ export module graphics;
 
 export import :Shader;
 export import :ShaderManager;
+export import :RenderSystem;

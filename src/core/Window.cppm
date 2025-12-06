@@ -7,54 +7,16 @@ import glfw;
 import spdlog;
 import opengl;
 
+import impl;
+
 namespace mc
 {
-
-export enum class Key
-{
-    w,
-    a,
-    s,
-    d,
-    space,
-    left_control,
-    left_alt,
-    left_shift,
-    ecs
-};
 
 export class Window
 {
   private:
     glfw::window* m_window = nullptr;
     bool m_isDisplayCursor = false;
-
-    static int toGLFWKeyCode(Key key)
-    {
-        switch (key)
-        {
-            case Key::w:
-                return glfw::key_w;
-            case Key::a:
-                return glfw::key_a;
-            case Key::s:
-                return glfw::key_s;
-            case Key::d:
-                return glfw::key_d;
-            case Key::left_shift:
-                return glfw::key_left_shift;
-            case Key::left_control:
-                return glfw::key_left_control;
-            case Key::left_alt:
-                return glfw::key_left_alt;
-            case Key::space:
-                return glfw::key_space;
-            case Key::ecs:
-                return glfw::key_escape;
-            default:
-                return 0;
-        }
-    }
 
   public:
     Window() = default;
@@ -94,6 +56,7 @@ export class Window
         glfw::makeContextCurrent(m_window);
         spdlog::debug("创建opengl上下文");
         gl::loadGLLoader((gl::loadproc)glfw::getProcAddress);
+        spdlog::debug("加载gl函数指针");
 
         glfw::swapInterval(1); // Vsync
 
@@ -135,9 +98,9 @@ export class Window
         spdlog::info("鼠标模式: {}", m_isDisplayCursor ? "显示" : "隐藏");
     }
 
-    [[nodiscard]] bool isKeyPressed(Key key) const
+    [[nodiscard]] bool isKeyPressed(impl::Key key) const
     {
-        return glfw::getKey(m_window, toGLFWKeyCode(key)) == glfw::press;
+        return glfw::getKey(m_window, static_cast<int>(key)) == glfw::press;
     }
 
     Window(const Window&) = delete;
