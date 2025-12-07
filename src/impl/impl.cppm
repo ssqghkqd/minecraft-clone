@@ -10,4 +10,5 @@ export import :Config;
 export import :Events;
 export import :Input;
 export import :Block;
-export import :Mesh;
+
+export import :Vertex;

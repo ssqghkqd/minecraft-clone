@@ -3,7 +3,7 @@
 //
 module;
 #include <array>
-export module impl:Mesh;
+export module impl:Vertex;
 import glm;
 
 namespace mc::impl::graphics

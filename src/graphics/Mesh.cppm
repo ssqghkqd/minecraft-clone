@@ -2,30 +2,64 @@
 // Copyright (C) 2025 ss
 //
 module;
-#include <cstdint>
-#include <unordered_map>
 #include <vector>
-export module graphics.impl.Mesh;
+export module graphics:Mesh;
 import opengl;
 import impl;
-import entt;
-import resources;
 
-namespace mc::Mesh
+namespace mc
 {
-export struct RenderBatch
+export class Mesh
 {
-    gl::uint vao;
-    gl::uint vbo;
-    gl::uint texture;
-    uint32_t vertexCount;
+  private:
+    friend class MeshManager;
+    gl::buffer vao_{0}, vbo_{0};
+    size_t vertexCount_{0};
 
-public:
-    void destory() const
+    explicit Mesh(const std::vector<impl::graphics::Vertex>& vertices)
     {
-        gl::deleteBuffers(1, &vbo);
-        gl::deleteVertexArrays(1, &vao);
+        vertexCount_ = vertices.size();
+        gl::genBuffers(1, &vbo_);
+        gl::genVertexArrays(1, &vao_);
+
+        gl::bindVertexArray(vao_);
+        gl::bindBuffer(gl::array_buffer, vbo_);
+        gl::bufferData(gl::array_buffer,
+                       vertices.size() * sizeof(impl::graphics::Vertex),
+                       vertices.data(),
+                       gl::static_draw);
+
+        gl::vertexAttribPointer(0,
+                                3,
+                                gl::FLOAT,
+                                gl::FALSE,
+                                sizeof(impl::graphics::Vertex),
+                                (void*)offsetof(impl::graphics::Vertex, position));
+        gl::enableVertexAttribArray(0);
+        gl::vertexAttribPointer(1,
+                                2,
+                                gl::FLOAT,
+                                gl::FALSE,
+                                sizeof(impl::graphics::Vertex),
+                                (void*)offsetof(impl::graphics::Vertex, texCoord));
+        gl::enableVertexAttribArray(1);
+
+        gl::bindVertexArray(0);
     }
+
+
+
+  public:
+    ~Mesh()
+    {
+        gl::deleteBuffers(1, &vbo_);
+        gl::deleteVertexArrays(1, &vao_);
+    }
+
+    Mesh(const Mesh& other) = delete;
+    Mesh(Mesh&& other) = default;
+    Mesh& operator=(const Mesh& other) = delete;
+    Mesh& operator=(Mesh&& other) = default;
 };
 
-} // namespace mc::Mesh
+} // namespace mc

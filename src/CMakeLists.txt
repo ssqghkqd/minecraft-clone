@@ -44,7 +44,6 @@ set(GRAPHICS
         graphics/graphics.cppm
         graphics/Shader.cppm
         graphics/ShaderManager.cppm
-        graphics/RenderSystem.cppm
 
         graphics/Mesh.cppm
 )

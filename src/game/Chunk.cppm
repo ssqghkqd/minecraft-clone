@@ -20,7 +20,7 @@ export class Chunk
   private:
     impl::Block blocks_[chunk_x_size * chunk_y_size * chunk_z_size]{};
     glm::ivec2 chunkPos_ = glm::ivec2(0);
-    std::unordered_map<impl::BlockType, std::vector<impl::Vertex>> blockVertices_;
+    std::unordered_map<impl::BlockType, std::vector<impl::graphics::Vertex>> blockVertices_{};
     bool dirty = false;
 
     static uint32_t toIndex(uint8_t x, uint8_t y, uint8_t z)
@@ -28,7 +28,7 @@ export class Chunk
         return y * (chunk_x_size * chunk_z_size) + z * chunk_x_size + x;
     }
 
-    void rebuildMesh()
+    void rebuildDict()
     {
         dirty = false;
         for (int x = 0; x < chunk_x_size; ++x)
@@ -44,7 +44,7 @@ export class Chunk
 
                     for (int i = 0; i < 6; i++)
                     {
-                        const auto neibor = glm::ivec3(x, y, z) + impl::normals[i];
+                        const auto neibor = glm::ivec3(x, y, z) + impl::graphics::normals[i];
                         // 在边界处的面不考虑 一律添加 必须先检查是否在区块内防止越界
                         if (isInChunk(neibor))
                         {
@@ -65,7 +65,7 @@ export class Chunk
         auto& vertices = blockVertices_[type];
         for (int j = 0; j < 6; j++)
         {
-            auto vertex = impl::vertices[i][j];
+            auto vertex = impl::graphics::vertices[i][j];
             vertex.position += blockPos;
             vertices.push_back(vertex);
         }
@@ -78,12 +78,12 @@ export class Chunk
     }
     ~Chunk() = default;
 
-    const std::unordered_map<impl::BlockType, std::vector<impl::Vertex>>&
-    getRenderInfor()
+    const std::unordered_map<impl::BlockType, std::vector<impl::graphics::Vertex>>&
+    getVertexDict()
     {
         if (dirty)
         {
-            rebuildMesh();
+            rebuildDict();
         }
         return blockVertices_;
     }
