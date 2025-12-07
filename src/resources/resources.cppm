@@ -6,4 +6,3 @@ module;
 export module resources;
 
 export import :AudioManager;
-export import :TextureManager;

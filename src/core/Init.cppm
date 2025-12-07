@@ -35,8 +35,9 @@ void initBasic()
 std::optional<error>
 loadResource(entt::registry& reg)
 {
-    auto& shaderM = reg.ctx().get<ShaderManager>();
-    auto& textureM = reg.ctx().get<TextureManager>();
+    auto& render = reg.ctx().get<Render>();
+    auto& shaderM = render.getShaderManager();
+    auto& textureM = render.getTextureManager();
 
     auto shaderPoss = shaderM.load("default",
                                    "shaders/default.vs",
@@ -56,18 +57,12 @@ loadResource(entt::registry& reg)
     return std::nullopt;
 }
 
-
 std::optional<error> initGL()
 {
     if (!glfw::init())
     {
         spdlog::critical("glfw初始化失败");
         return error::init_glfw_failed;
-    }
-    if (!gl::loadGLLoader((gl::loadproc)glfw::getProcAddress))
-    {
-        spdlog::critical("gl函数指针加载失败");
-        return error::init_glad_failed;
     }
 
     return std::nullopt;
@@ -81,12 +76,10 @@ void emplaceManager(entt::registry& reg)
     reg.ctx().emplace<InputSystem>();
 
     // 2.resources
-    reg.ctx().emplace<TextureManager>();
     reg.ctx().emplace<AudioManager>();
 
     // 3.graphics
-    reg.ctx().emplace<ShaderManager>();
-    reg.ctx().emplace<RenderSystem>();
+    reg.ctx().emplace<Render>();
 
     // 4.game
     reg.ctx().emplace<PlayerSys>(reg);
@@ -103,23 +96,46 @@ void registerEvents(entt::registry& reg)
     playerSys.registerMove(dp);
 }
 
+void initGame(entt::registry& reg)
+{
+    auto& playerSys = reg.ctx().get<PlayerSys>();
+    auto& world = reg.ctx().get<World>();
+    auto& render = reg.ctx().get<Render>();
+    auto& textureM = render.getTextureManager();
+
+    playerSys.create(reg);
+    world.init();
+    render.init(impl::config::window_width * impl::config::window_scale,
+                impl::config::window_height * impl::config::window_scale);
+
+    world.registerBlockTexture(impl::BlockType::grass_block, textureM.getTexture("grass_block"));
+}
+
+void createWindow(entt::registry& reg)
+{
+    auto& window = reg.ctx().get<Window>();
+    window.createWindow(impl::config::window_width * impl::config::window_scale,
+                        impl::config::window_height * impl::config::window_scale,
+                        impl::config::window_title);
+}
+
 export std::optional<error>
 init(entt::registry& reg)
 {
     initBasic();
     initGL();
-
     emplaceManager(reg);
+    createWindow(reg);
     registerEvents(reg);
+    loadResource(reg);
 
-    const auto e = loadResource(reg);
-    if (e.has_value())
-    {
-        return e;
-    }
+    // const auto e = loadResource(reg);
+    // if (e.has_value())
+    // {
+    //     return e;
+    // }
 
-
-
+    initGame(reg);
     return std::nullopt;
 }
 } // namespace mc::Init

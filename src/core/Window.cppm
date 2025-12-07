@@ -54,6 +54,11 @@ export class Window
         spdlog::debug("窗口创建成功");
         glfw::makeContextCurrent(m_window);
         spdlog::debug("创建opengl上下文");
+        if (!gl::loadGLLoader((gl::loadproc)glfw::getProcAddress))
+        {
+            spdlog::critical("gl函数指针加载失败");
+            return impl::error::ErrorType::init_glad_failed;
+        }
 
         glfw::swapInterval(0); // Vsync
 

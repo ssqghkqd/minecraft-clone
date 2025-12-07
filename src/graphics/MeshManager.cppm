@@ -2,7 +2,8 @@
 // Copyright (C) 2025 ss
 //
 module;
-
+#include <memory>
+#include <vector>
 export module graphics:MeshManager;
 import :Mesh;
 
@@ -15,15 +16,15 @@ export class MeshManager
     MeshManager() = default;
     ~MeshManager() = default;
 
-    static Mesh createMesh(const std::vector<impl::graphics::Vertex>& vertices)
+    static std::unique_ptr<Mesh> createMesh(const std::vector<impl::graphics::Vertex>& vertices)
     {
-        Mesh mesh{vertices};
+        auto mesh = std::make_unique<Mesh>(vertices);
         return mesh;
     }
 
     MeshManager(const MeshManager&) = delete;
     MeshManager& operator=(const MeshManager&) = delete;
-    MeshManager(const MeshManager&&) = default;
-    MeshManager& operator=(const MeshManager&&) = default;
+    MeshManager(const MeshManager&&) = delete;
+    MeshManager& operator=(const MeshManager&&) = delete;
 };
 } // namespace mc

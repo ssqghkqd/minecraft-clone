@@ -107,7 +107,7 @@ export class PlayerSys
         EntityComp& ec = reg.get<EntityComp>(player_);
         const PlayerComp& pc = reg.get<PlayerComp>(player_);
 
-        ec.vel = glm::mix(ec.vel, pc.targetDir * 5.0f, 0.7f);
+        ec.vel = glm::mix(ec.vel, pc.targetDir * 10.0f, 0.7f);
     }
 
     void create(entt::registry& reg)

@@ -7,7 +7,7 @@ module;
 #include <string>
 #include <unordered_map>
 
-export module resources:TextureManager;
+export module graphics:TextureManager;
 import opengl;
 import spdlog;
 import utils;
@@ -24,7 +24,6 @@ class TextureManager
   private:
     std::unordered_map<std::string, gl::uint> m_textures; // 纹理缓存
     std::unordered_map<impl::BlockType, gl::uint> m_blocks;
-    gl::uint m_lastTexture = 0;
 
   public:
     TextureManager()

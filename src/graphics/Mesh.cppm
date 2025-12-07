@@ -16,6 +16,8 @@ export class Mesh
     gl::buffer vao_{0}, vbo_{0};
     size_t vertexCount_{0};
 
+
+  public:
     explicit Mesh(const std::vector<impl::graphics::Vertex>& vertices)
     {
         vertexCount_ = vertices.size();
@@ -46,14 +48,23 @@ export class Mesh
 
         gl::bindVertexArray(0);
     }
-
-
-
-  public:
     ~Mesh()
     {
         gl::deleteBuffers(1, &vbo_);
         gl::deleteVertexArrays(1, &vao_);
+    }
+
+    [[nodiscard]] gl::buffer getVAO() const
+    {
+        return vao_;
+    }
+    [[nodiscard]] gl::buffer getVBO() const
+    {
+        return vbo_;
+    }
+    size_t getVertexCount() const
+    {
+        return vertexCount_;
     }
 
     Mesh(const Mesh& other) = delete;

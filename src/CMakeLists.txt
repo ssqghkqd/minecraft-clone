@@ -44,8 +44,10 @@ set(GRAPHICS
         graphics/graphics.cppm
         graphics/Shader.cppm
         graphics/ShaderManager.cppm
-
+        graphics/Pipeline.cppm
         graphics/Mesh.cppm
+        graphics/Render.cppm
+        graphics/MeshManager.cppm
 )
 
 set(IMPLS
@@ -55,13 +57,13 @@ set(IMPLS
         impl/Events.cppm
         impl/Input.cppm
         impl/Block.cppm
-        graphics/impl/Mesh.cppm
+        graphics/impl/Vertex.cppm
 
 )
 
 set(RESOURCES
         resources/AudioManager.cppm
-        resources/TextureManager.cppm
+        graphics/TextureManager.cppm
         resources/resources.cppm
 )
 

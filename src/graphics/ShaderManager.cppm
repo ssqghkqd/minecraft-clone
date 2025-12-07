@@ -21,7 +21,7 @@ namespace mc
 export class ShaderManager
 {
   private:
-    std::pmr::unordered_map<std::string, std::unique_ptr<Shader>> m_shaders{};
+    std::unordered_map<std::string, std::unique_ptr<Shader>> m_shaders{};
 
   public:
     ShaderManager() = default;

@@ -15,7 +15,6 @@ import :InputSystem;
 
 import game.ecs;
 import game;
-import graphics.impl.Mesh;
 
 namespace mc
 {
@@ -71,8 +70,8 @@ export class App
         auto& window = m_registry.ctx().get<Window>();
         auto& inputsys = m_registry.ctx().get<InputSystem>();
         auto& playerSys = m_registry.ctx().get<PlayerSys>();
-        auto& renderS = m_registry.ctx().get<RenderSystem>();
         auto& world = m_registry.ctx().get<World>();
+        auto& render = m_registry.ctx().get<Render>();
 
         while (!window.shouldClose())
         {
@@ -80,16 +79,15 @@ export class App
             window.pollEvents();
             window.updateFPS(Time::getTime());
 
-            renderS.frameBegin();
+            render.beginFrame();
 
             inputsys.update(m_registry);
 
             playerSys.update(m_registry);
             EntityMoveSys::update(m_registry, Time::getDeltaTime());
-            auto renderBatch = Mesh::buildRenderBatch(m_registry, world.getRenderInfor());
-            renderS.render(&renderBatch, playerSys.getView(m_registry));
+            render.renderWorld(world.getRenderInfor(), playerSys.getView(m_registry));
 
-            renderS.frameEnd();
+            render.endFrame();
             window.swapBuffers();
         }
     }
