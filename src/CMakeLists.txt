@@ -45,6 +45,8 @@ set(GRAPHICS
         graphics/Shader.cppm
         graphics/ShaderManager.cppm
         graphics/RenderSystem.cppm
+
+        graphics/Mesh.cppm
 )
 
 set(IMPLS
@@ -52,7 +54,9 @@ set(IMPLS
         impl/Error.cppm
         impl/Config.cppm
         impl/Events.cppm
-        impl/Key.cppm
+        impl/Input.cppm
+        impl/Block.cppm
+        graphics/impl/Mesh.cppm
 
 )
 
@@ -68,6 +72,10 @@ set(GAMES
         game/ecs/PlayerSys.cppm
         game/ecs/comp/EntityComp.cppm
         game/ecs/comp/Tag.cppm
+
+        game/Chunk.cppm
+        game/game.cppm
+        game/World.cppm
 )
 
 

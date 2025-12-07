@@ -14,7 +14,14 @@ export enum class ErrorType
 
     shader_vert_failed,
     shader_frag_failed,
-    shader_program_failed
+    shader_program_failed,
+
+    init_glfw_failed,
+    init_glad_failed,
+
+    window_create_window_failed,
+
+    texture_load_failed
 };
 
 export const char* getError(ErrorType type)
@@ -31,8 +38,16 @@ export const char* getError(ErrorType type)
             return "Shader frag failed";
         case ErrorType::shader_program_failed:
             return "Shader program failed";
+        case ErrorType::init_glfw_failed:
+            return "Init GLFW failed";
+        case ErrorType::init_glad_failed:
+            return "Init GLAD failed";
+        case ErrorType::window_create_window_failed:
+            return "Window creation failed";
+        case ErrorType::texture_load_failed:
+            return "Texture load failed";
         default:
             return "Unknown error";
     }
 }
-} // namespace mc::impl
+} // namespace mc::impl::error

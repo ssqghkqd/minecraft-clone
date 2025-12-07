@@ -135,5 +135,17 @@ export class Shader
         assert(location >= 0 && "找不到uniform！");
         gl::uniformMatrix4fv(location, 1, gl::FALSE, glm::gtc::value_ptr(mat));
     }
+
+    void set(const char* name, int n) const
+    {
+        const int location = gl::getUniformLocation(m_id, name);
+        assert(location >= 0 && "找不到uniform！");
+        gl::uniform1i(location, n);
+    }
+
+    void use() const
+    {
+        gl::useProgram(m_id);
+    }
 };
 } // namespace mc

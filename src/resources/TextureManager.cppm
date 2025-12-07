@@ -2,7 +2,7 @@
 // Copyright (C) 2025 ss
 // 纹理管理器
 module;
-#include <cassert>
+#include <expected>
 #include <filesystem>
 #include <string>
 #include <unordered_map>
@@ -13,6 +13,8 @@ import spdlog;
 import utils;
 import stb_image;
 
+import impl;
+
 namespace fs = std::filesystem;
 
 export namespace mc
@@ -21,6 +23,7 @@ class TextureManager
 {
   private:
     std::unordered_map<std::string, gl::uint> m_textures; // 纹理缓存
+    std::unordered_map<impl::BlockType, gl::uint> m_blocks;
     gl::uint m_lastTexture = 0;
 
   public:
@@ -38,7 +41,7 @@ class TextureManager
     }
 
     // path是完整路径（assets下的)
-    gl::uint loadTexture(const std::string& textureName, const fs::path& path)
+    std::expected<gl::uint, impl::error::ErrorType> loadTexture(const std::string& textureName, const fs::path& path)
     {
         if (m_textures.contains(textureName))
         {
@@ -48,12 +51,11 @@ class TextureManager
         const auto fullPathPossible = FileUtils::getResourcePath(path, true);
         if (!fullPathPossible.has_value())
         {
-            // 任何加载时错误应该直接退出程序
             spdlog::critical("纹理加载失败:{}不存在", textureName);
-            throw std::runtime_error(fullPathPossible.error());
+            return std::unexpected(impl::error::ErrorType::file_not_found);
         }
 
-        const auto fullPath = fullPathPossible.value();
+        const auto& fullPath = fullPathPossible.value();
         int width, height, nrChannels;
         unsigned char* data = stbi::load(fullPath.string().c_str(), &width, &height, &nrChannels, 0);
 
@@ -61,7 +63,7 @@ class TextureManager
         {
             const char* r = stbi::failureReason();
             spdlog::critical("加载{}失败 原因{}", textureName, r);
-            throw std::runtime_error(fullPath.string());
+            return std::unexpected(impl::error::ErrorType::texture_load_failed);
         }
 
         gl::glenum format = gl::rgb;
@@ -79,7 +81,7 @@ class TextureManager
             default:
                 stbi::imageFree(data);
                 spdlog::critical("加载{}失败，原因不支持{}通道", fullPath.string(), nrChannels);
-                throw std::runtime_error(stbi::failureReason());
+                return std::unexpected(impl::error::ErrorType::texture_load_failed);
         }
 
         gl::uint textureID;
@@ -91,7 +93,15 @@ class TextureManager
         gl::texParameteri(gl::texture_2d, gl::texture_min_filter, gl::linear_mipmap_linear);
         gl::texParameteri(gl::texture_2d, gl::texture_mag_filter, gl::linear);
 
-        gl::texImage2D(gl::texture_2d, 0, format, width, height, 0, format, gl::unsigned_byte, data);
+        gl::texImage2D(gl::texture_2d,
+                       0,
+                       (int)format,
+                       width,
+                       height,
+                       0,
+                       format,
+                       gl::unsigned_byte,
+                       data);
         gl::generateMipmap(gl::texture_2d);
         gl::activeTexture(gl::texture0);
 
@@ -114,15 +124,18 @@ class TextureManager
         return 0; // 无效纹理
     }
 
-    void bind(gl::uint id)
+    void registerBlockTexture(impl::BlockType type, const std::string& textureName)
     {
-        assert(id != 0 && "id无效");
-        if (id != m_lastTexture)
+        if (m_blocks.contains(type))
         {
-            // 别检查 id不存在确实导致段错误，但不应该检查，应该在编程时发现bug，否则性能真的太差了
-            gl::bindTexture(gl::texture_2d, id);
-            m_lastTexture = id;
+            return;
         }
+        m_blocks[type] = getTexture(textureName);
+    }
+
+    gl::uint getBlockTexture(impl::BlockType type)
+    {
+        return m_blocks[type];
     }
 
     TextureManager(const TextureManager&) = delete;

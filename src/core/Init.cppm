@@ -6,6 +6,8 @@ module;
 export module core:Init;
 import entt;
 import spdlog;
+import opengl;
+import glfw;
 
 import utils;
 import impl;
@@ -16,6 +18,10 @@ import :AppLogicSys;
 
 import graphics;
 import game.ecs;
+import resources;
+import game;
+
+using error = mc::impl::error::ErrorType;
 
 namespace mc::Init
 {
@@ -26,60 +32,93 @@ void initBasic()
     spdlog::set_level(spdlog::level_enum::debug);
 }
 
-void initManager(entt::registry& reg)
-{
-    auto& dp = reg.ctx().emplace<entt::dispatcher>();
-    auto& window = reg.ctx().emplace<Window>();
-    window.createWindow(impl::config::window_width * impl::config::window_scale,
-                        impl::config::window_height * impl::config::window_scale,
-                        impl::config::window_title);
-
-    reg.ctx().emplace<InputSystem>();
-
-    reg.ctx().emplace<ShaderManager>();
-
-    reg.ctx().emplace<RenderSystem>();
-    auto& ps = reg.ctx().emplace<PlayerSys>(reg);
-
-    ps.create(reg);
-    ps.registerMove(dp);
-    AppLogic::init(dp);
-}
-
-std::optional<impl::error::ErrorType>
+std::optional<error>
 loadResource(entt::registry& reg)
 {
     auto& shaderM = reg.ctx().get<ShaderManager>();
-    auto shaderPoss = shaderM.load("default", "shaders/default.vs", "shaders/default.fs");
+    auto& textureM = reg.ctx().get<TextureManager>();
+
+    auto shaderPoss = shaderM.load("default",
+                                   "shaders/default.vs",
+                                   "shaders/default.fs");
     if (!shaderPoss.has_value())
     {
         return shaderPoss.error();
     }
 
+    auto texturePoss = textureM.loadTexture("grass_block",
+                                            "textures/grass_block.png");
+    if (!texturePoss.has_value())
+    {
+        return texturePoss.error();
+    }
+
     return std::nullopt;
 }
 
-void initOtherManager(entt::registry& reg)
-{
-    auto& rs = reg.ctx().get<RenderSystem>();
-    auto& shaderM = reg.ctx().get<ShaderManager>();
 
-    rs.init(impl::config::window_width * impl::config::window_scale,
-            impl::config::window_height * impl::config::window_scale,
-            {shaderM.get("default")},
-            0);
+std::optional<error> initGL()
+{
+    if (!glfw::init())
+    {
+        spdlog::critical("glfw初始化失败");
+        return error::init_glfw_failed;
+    }
+    if (!gl::loadGLLoader((gl::loadproc)glfw::getProcAddress))
+    {
+        spdlog::critical("gl函数指针加载失败");
+        return error::init_glad_failed;
+    }
+
+    return std::nullopt;
 }
 
-export std::optional<impl::error::ErrorType>
+void emplaceManager(entt::registry& reg)
+{
+    reg.ctx().emplace<entt::dispatcher>();
+    // 1. core
+    reg.ctx().emplace<Window>();
+    reg.ctx().emplace<InputSystem>();
+
+    // 2.resources
+    reg.ctx().emplace<TextureManager>();
+    reg.ctx().emplace<AudioManager>();
+
+    // 3.graphics
+    reg.ctx().emplace<ShaderManager>();
+    reg.ctx().emplace<RenderSystem>();
+
+    // 4.game
+    reg.ctx().emplace<PlayerSys>(reg);
+    reg.ctx().emplace<World>();
+}
+
+void registerEvents(entt::registry& reg)
+{
+    auto& dp = reg.ctx().get<entt::dispatcher>();
+
+    auto& playerSys = reg.ctx().get<PlayerSys>();
+
+    AppLogic::registerHandle(dp);
+    playerSys.registerMove(dp);
+}
+
+export std::optional<error>
 init(entt::registry& reg)
 {
     initBasic();
-    initManager(reg);
-    const auto initMPoss = loadResource(reg);
-    if (initMPoss.has_value())
+    initGL();
+
+    emplaceManager(reg);
+    registerEvents(reg);
+
+    const auto e = loadResource(reg);
+    if (e.has_value())
     {
-        return initMPoss;
+        return e;
     }
+
+
 
     return std::nullopt;
 }

@@ -3,7 +3,4 @@
 //
 module;
 
-export module game;
-
-export import :Chunk;
-export import :World;
+export module CmdBuffer;

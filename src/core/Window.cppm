@@ -2,10 +2,12 @@
 // Copyright (C) 2025 ss
 // 窗口主类
 module;
+#include <optional>
 export module core:Window;
 import glfw;
 import spdlog;
 import opengl;
+import entt;
 
 import impl;
 
@@ -18,6 +20,9 @@ export class Window
     glfw::window* m_window = nullptr;
     bool m_isDisplayCursor = false;
 
+    double m_lastTime = 0.0;
+    int fps_ = 0;
+
   public:
     Window() = default;
     ~Window()
@@ -26,18 +31,12 @@ export class Window
         m_window = nullptr;
     }
 
-    // 失败会抛出异常
-    void createWindow(int width, int height, const char* title)
+    std::optional<impl::error::ErrorType> createWindow(int width, int height, const char* title)
     {
         if (m_window != nullptr)
         {
             spdlog::warn("窗口已经创建");
-            return;
-        }
-        if (!glfw::init())
-        {
-            spdlog::critical("glfw初始化失败");
-            throw;
+            return std::nullopt;
         }
 
         glfw::windowHint(glfw::scale_to_monitor, glfw::FALSE);  // 禁用系统缩放
@@ -50,17 +49,17 @@ export class Window
         if (!m_window)
         {
             spdlog::critical("窗口创建失败");
-            throw;
+            return impl::error::ErrorType::window_create_window_failed;
         }
         spdlog::debug("窗口创建成功");
         glfw::makeContextCurrent(m_window);
         spdlog::debug("创建opengl上下文");
-        gl::loadGLLoader((gl::loadproc)glfw::getProcAddress);
-        spdlog::debug("加载gl函数指针");
 
-        glfw::swapInterval(1); // Vsync
+        glfw::swapInterval(0); // Vsync
 
         glfw::setInputMode(m_window, glfw::cursor, glfw::cursor_disabled);
+
+        return std::nullopt;
     }
 
     bool shouldClose() const
@@ -101,6 +100,29 @@ export class Window
     [[nodiscard]] bool isKeyPressed(impl::Key key) const
     {
         return glfw::getKey(m_window, static_cast<int>(key)) == glfw::press;
+    }
+
+    [[nodiscard]] impl::MousePos getMousePos() const
+    {
+        double xpos, ypos;
+        glfw::getCursorPos(m_window, &xpos, &ypos);
+        return {.x = (float)xpos, .y = (float)ypos};
+    }
+
+    [[nodiscard]] bool isButtonPressed(impl::Button button) const
+    {
+        return glfw::getMouseButton(m_window, static_cast<int>(button)) == glfw::press;
+    }
+
+    void updateFPS(double currentTime)
+    {
+        fps_++;
+        if (currentTime - m_lastTime >= 1.0)
+        {
+            m_lastTime = currentTime;
+            spdlog::info("FPS: {}", fps_);
+            fps_ = 0;
+        }
     }
 
     Window(const Window&) = delete;

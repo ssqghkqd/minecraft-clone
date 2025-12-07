@@ -16,12 +16,12 @@ struct Handler
     impl::events::InputState m_prevState{};
     void handleInput(const impl::events::InputState& event)
     {
-        if (event.keyActions.esc)
+        if (event.keyStates.esc)
         {
             dp.trigger(impl::events::AppShutDownRequestEvent{});
         }
         // 按键防抖
-        if (event.keyActions.left_alt && !m_prevState.keyActions.left_alt)
+        if (event.keyStates.left_alt && !m_prevState.keyStates.left_alt)
         {
             dp.trigger(impl::events::WindowToggleCursorEvent{});
         }
@@ -29,7 +29,7 @@ struct Handler
     }
 };
 
-export void init(entt::dispatcher& dp)
+export void registerHandle(entt::dispatcher& dp)
 {
     static Handler handler{dp};
     dp.sink<impl::events::InputState>().connect<&Handler::handleInput>(handler);

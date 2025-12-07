@@ -43,11 +43,11 @@ std::expected<fs::path, std::string> getResourcePath(const fs::path &relativePat
 {
     // TODO 目前硬编码了路径
     static fs::path basePath;
+    basePath = "../resources";
     if (isAssets)
     {
         basePath = "../../minecraft-assets/assets";
     }
-    basePath = "../resources";
     const auto finalPath = basePath / relativePath;
     if (!fs::exists(finalPath))
     {

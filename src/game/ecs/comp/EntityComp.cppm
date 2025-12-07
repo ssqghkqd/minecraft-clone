@@ -22,5 +22,7 @@ export struct PlayerComp
 {
     glm::vec3 forward{0.0f};
     glm::vec3 targetDir{0.0f}; // 移动趋势向量
+    float pitch{0.0f};
+    float yaw{0.0f};
 };
-}
+} // namespace mc

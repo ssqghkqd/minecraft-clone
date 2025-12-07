@@ -3,7 +3,7 @@
 //
 module;
 
-export module impl:Key;
+export module impl:Input;
 import glfw;
 
 namespace mc::impl
@@ -19,5 +19,17 @@ export enum class Key
     left_alt = glfw::key_left_alt,
     left_shift = glfw::key_left_shift,
     ecs = glfw::key_escape
+};
+
+export struct MousePos
+{
+    float x = 0.0f;
+    float y = 0.0f;
+};
+
+export enum class Button
+{
+    left = glfw::mouse_button_left,
+    right = glfw::mouse_button_right,
 };
 }

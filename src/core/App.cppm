@@ -14,6 +14,8 @@ import :Init;
 import :InputSystem;
 
 import game.ecs;
+import game;
+import graphics.impl.Mesh;
 
 namespace mc
 {
@@ -40,7 +42,7 @@ export class App
   public:
     App()
     {
-        auto initPoss = Init::init(m_registry);
+        const auto initPoss = Init::init(m_registry);
         if (initPoss.has_value())
         {
             m_errorInfor = impl::error::getError(initPoss.value());
@@ -69,16 +71,25 @@ export class App
         auto& window = m_registry.ctx().get<Window>();
         auto& inputsys = m_registry.ctx().get<InputSystem>();
         auto& playerSys = m_registry.ctx().get<PlayerSys>();
+        auto& renderS = m_registry.ctx().get<RenderSystem>();
+        auto& world = m_registry.ctx().get<World>();
 
         while (!window.shouldClose())
         {
             Time::update();
             window.pollEvents();
+            window.updateFPS(Time::getTime());
+
+            renderS.frameBegin();
 
             inputsys.update(m_registry);
 
             playerSys.update(m_registry);
+            EntityMoveSys::update(m_registry, Time::getDeltaTime());
+            auto renderBatch = Mesh::buildRenderBatch(m_registry, world.getRenderInfor());
+            renderS.render(&renderBatch, playerSys.getView(m_registry));
 
+            renderS.frameEnd();
             window.swapBuffers();
         }
     }

@@ -22,7 +22,16 @@ export struct InputState
         bool left_control;
         bool esc;
 
-    } keyActions;
+    } keyStates;
+
+    struct
+    {
+        bool left;
+        bool right;
+        float x;
+        float y;
+    } mouseStates;
+
 };
 
 export struct AppShutDownRequestEvent
@@ -32,4 +41,4 @@ export struct WindowToggleCursorEvent
 {
 };
 
-} // namespace mc::events
+} // namespace mc::impl::events

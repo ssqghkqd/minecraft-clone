@@ -48,6 +48,7 @@ auto& texImage2D = glTexImage2D;
 auto& generateMipmap = glGenerateMipmap;
 auto& deleteTextures = glDeleteTextures;
 auto& cullFace = glCullFace;
+auto& drawArrays = glDrawArrays;
 
 // 先占个坑 后续再加更多需要的符号
 using loadproc = GLADloadproc;
